@@ -1,6 +1,5 @@
 # Permalinks
 permalink:      /:year-:month-:day/:title
-
 # Setup
 title:          "Jakub Niechcial"
 paginate:       10
@@ -44,3 +43,4 @@ github:
 plugins:
   - jekyll-paginate
   - jekyll-seo-tag
+  - jekyll-sitemap
