@@ -22,6 +22,11 @@ layout: default
 
   {{ content }}
 
+  <ul class="share-buttons">
+    <li><a href="https://twitter.com/intent/tweet?url={{ site.url }}{{ page.url }}&text={{ page.title }}&via=jniechcial" target="_blank" title="Tweet"><img alt="Tweet" src="/icons/Twitter.png" /></a></li>
+    <li><a href="http://www.linkedin.com/shareArticle?mini=true&url={{ site.url }}{{ page.url }}&title={{ page.title }}&summary={{ page.description }}&source={{ site.url }}{{ page.url }}" target="_blank" title="Share on LinkedIn"><img alt="Share on LinkedIn" src="/icons/LinkedIn.png" /></a></li>
+    <li><a href="mailto:{{ site.email }}" target="_blank" title="Send email"><img alt="Send email" src="/icons/Email.png" /></a></li>
+  </ul>
 </div>
 
 <div class="pagination">

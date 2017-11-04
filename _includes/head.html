@@ -2,15 +2,41 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>
-    {% if page.title == "Home" %}
-      {{ site.title }}
-    {% else %}
-      {{ page.title }} &middot; {{ site.title }}
-    {% endif %}
-  </title>
-
+  {% seo %}
   <!-- CSS -->
+  <link href="//cdn-images.mailchimp.com/embedcode/classic-10_7.css" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="{{ site.baseurl }}/styles.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
+  <style type="text/css">
+    #mc_embed_signup{background:#fff; clear:left; font:14px Helvetica,Arial,sans-serif; }
+    #mc_embed_signup form {
+      border-bottom: 1px solid #e5e5e5;
+      padding: 2rem 0 !important;
+    }
+    #mc_embed_signup_email_label {
+      color: #353535;
+      display: block;
+      font-family: "Helvetica Neue","Segoe UI",Helvetica,Arial,sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin: .5rem 0;
+      text-align: center;
+      margin-bottom: 10px !important;
+    }
+    #mc_embed_signup .mc-field-group {
+      width: 100%
+    }
+
+    #mc_embed_signup .button {
+      background-color: #353535;
+      border-radius: 0;
+      height: 40px;
+      display: block;
+      margin: 0 auto;
+    }
+
+    #mc_embed_signup .mc-field-group input {
+      font-size: 16px;
+    }
+  </style>
 </head>

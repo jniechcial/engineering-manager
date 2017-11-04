@@ -2,10 +2,24 @@
 permalink:      /:year-:month-:day/:title
 
 # Setup
-title:          Tale
-paginate:       5
-baseurl:        "/tale"
-url:            "https://chesterhow.github.io"
+title:          "Jakub Niechcial"
+paginate:       10
+baseurl:        ""
+url:            "https://niechcial.me"
+email:          jakub.niechcial@gmail.com
+
+# SEO
+description:    Opinions, thoughts and shared lessons learned about engineering from world-class consulting and world-class product. Not best and most general, but personal.
+twitter:
+  username:     jniechcial
+social:
+  name: Jakub Niechcial
+  links:
+    - https://twitter.com/jakubniechcial
+    - https://www.facebook.com/jakub.niechcial
+    - https://www.linkedin.com/in/jakubniechcial/
+    - https://github.com/jniechcial
+google_site_verification: jII5aUFaBEa41Fk9PGCvbKLoOqnT80KqHnbiDupOATA
 
 # Assets
 sass:
@@ -17,9 +31,9 @@ markdown:       kramdown
 
 # About
 author:
-  name:         Chester How
-  url:          http://chester.how
-  email:        chesterhow@gmail.com
+  name:         Jakub Niechcial
+  url:          https://niechcial.me
+  email:        jakub.niechcial@gmail.com
 
 # Custom vars
 version:        3.4.1
@@ -27,5 +41,6 @@ github:
   repo:         https://github.com/chesterhow/tale
 
 # Gems
-gems:
+plugins:
   - jekyll-paginate
+  - jekyll-seo-tag

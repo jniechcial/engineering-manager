@@ -1,15 +1,13 @@
 ---
 layout: post
-title: "About"
-author: "Chester"
+title: "About me"
+author: "Jakub"
+description: Opinions about engineering is more high-level set of summaries from my experience and lessons learned in world-class consulting and world-class product.
 permalink: /about/
 ---
 
-A friend of mine writes short stories. One sunny day, I asked if he wanted a website to showcase his works and he agreed. I decided to use GitHub Pages to host his site. That way he wouldn't have to buy a domain and a server.
+I always liked writing blog posts. I write since 2014 when I joined Netguru. First, I wanted to give back to the community, specifically Ember community, what I learned during multiple Ember-based commercial projects. Spending tens or hundreds of hours on writing was worth these couple moments when somebody, known or a stranger, reached out to me and thanked for a particular blog post that helped him or her solve the problem.
 
-While doing some research up on GitHub Pages, I accidentally chanced upon this _simple, blog-aware, static site generator_ called [Jekyll](https://jekyllrb.com/) which works really well with GitHub Pages. I figured it would do just fine for my friend and I set about searching for a pretty theme. I wanted a theme with a _book-ish_ vibe. Unfortunately, most of the themes were too modern. Eventually, I caved and begun working on my own theme. With the help of [Poole](https://github.com/poole/poole), the Jekyll Butler, I was able to build **Tale**.
+I eventually moved to a management role. At Netguru I was running frontend department and lead half of backend department. Over 70 people in your team can give you a lot of lessons. Now I am Engineering Manager at Intercom. Tens of millions users, again, can give you a lot of lessons.
 
-## Contribute
-Feel free to create an issue or make a pull request on [GitHub](https://github.com/chesterhow/tale).
-
-Thanks for reading!
+Opinions about engineering are a set of summaries of my experiences, lessons learned and just an opinions on a wide range of high-level software problems. Less about code, more about culture, leadership, and management.
