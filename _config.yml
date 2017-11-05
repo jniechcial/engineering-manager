@@ -7,6 +7,9 @@ baseurl:        ""
 url:            "https://niechcial.me"
 email:          jakub.niechcial@gmail.com
 
+disqus:
+  shortname: niechcial
+
 # SEO
 description:    Opinions, thoughts and shared lessons learned about engineering from world-class consulting and world-class product. Not best and most general, but personal.
 twitter:

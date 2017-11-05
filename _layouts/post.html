@@ -27,6 +27,24 @@ layout: default
     <li><a href="http://www.linkedin.com/shareArticle?mini=true&url={{ site.url }}{{ page.url }}&title={{ page.title }}&summary={{ page.description }}&source={{ site.url }}{{ page.url }}" target="_blank" title="Share on LinkedIn"><img alt="Share on LinkedIn" src="/icons/LinkedIn.png" /></a></li>
     <li><a href="mailto:{{ site.email }}" target="_blank" title="Send email"><img alt="Send email" src="/icons/Email.png" /></a></li>
   </ul>
+
+  {% if page.comments %}
+    <div id="disqus_thread"></div>
+    <script>
+      var disqus_config = function () {
+        this.page.url = "{{ site.url }}{{ page.url }}";
+        this.page.identifier = "{{ site.url }}{{ page.url }}";
+        this.page.title = "{{ page.title }}";
+      };
+      (function() {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://{{ site.disqus.shortname }}.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+      })();
+      </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  {% endif %}
 </div>
 
 <div class="pagination">
