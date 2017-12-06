@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Keep your business close to your employees"
-author: "Jakub"
+author: "Kuba"
 comments: true
 description: Everyone knows that keeping your people informed about how they impact the company with their work is a significant motivator. Talking about shareholders goals keeps the real business close to your employees.
 ---

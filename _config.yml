@@ -1,7 +1,7 @@
 # Permalinks
 permalink:      /:year-:month-:day/:title
 # Setup
-title:          "Jakub Niechcial"
+title:          "Kuba Niechcial"
 paginate:       10
 baseurl:        ""
 url:            "https://niechcial.me"
@@ -13,11 +13,11 @@ disqus:
 # SEO
 description:    Opinions, thoughts and shared lessons learned about engineering from world-class consulting and world-class product. Not best and most general, but personal.
 twitter:
-  username:     jniechcial
+  username:     kubabniechcial
 social:
-  name: Jakub Niechcial
+  name: Kuba Niechcial
   links:
-    - https://twitter.com/jakubniechcial
+    - https://twitter.com/kubabniechcial
     - https://www.facebook.com/jakub.niechcial
     - https://www.linkedin.com/in/jakubniechcial/
     - https://github.com/jniechcial
@@ -33,7 +33,7 @@ markdown:       kramdown
 
 # About
 author:
-  name:         Jakub Niechcial
+  name:         Kuba Niechcial
   url:          https://niechcial.me
   email:        jakub.niechcial@gmail.com
 

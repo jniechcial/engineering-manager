@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "About me"
-author: "Jakub"
+author: "Kuba"
 description: Opinions about engineering is more high-level set of summaries from my experience and lessons learned in world-class consulting and world-class product.
 permalink: /about/
 ---

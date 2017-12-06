@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Growth of the company is your growth"
-author: "Jakub"
+author: "Kuba"
 comments: true
 description: It may be common among engineers to hear that the company is growing too fast. What does the growth of the company actually mean for an engineer in startup?
 ---
