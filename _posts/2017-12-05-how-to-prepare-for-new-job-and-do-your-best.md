@@ -12,7 +12,7 @@ I recently changed a job, a role and a place to live which means that I introduc
 ### Don’t think that doing the same as before will be enough.
 Even if previously it worked when you changed your former job, it might not work in your next position. You should leave your ego and biases behind as much as possible and start with a blank page, strategically thinking about what is expected of you and how you can achieve it.
 
-Track what you spend your time on and what progress you make.
+### Track what you spend your time on and what progress you make.
 You should constantly evaluate if you are spending enough time and doing significant progress in the key areas that are expected from you. It is very probable that you will unconsciously move to duties or areas that are most comfortable for you but might not be important from the perspective of the new role. Good engineers moving to manager position can spend too much time on engineering neglecting management. Good managers moving to engineers might try to spend too much time tech leading and neglecting individual contributions. Thanks to constant evaluation of your results without any bias, you can clearly catch if you are going off track and should react.
 
 ### Push yourself out of your team, direct reports, and your direct manager.
