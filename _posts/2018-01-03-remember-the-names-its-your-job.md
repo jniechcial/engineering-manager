@@ -26,4 +26,5 @@ If you are interested in more detailed content about remembering names check out
 * [Cool HBR video](https://hbr.org/video/2226820989001/how-to-remember-a-name)
 * [Five tricks to remember names from Forbes](https://www.forbes.com/sites/work-in-progress/2013/08/21/the-best-five-tricks-to-remember-names/#6574ba6e501f)
 * [Memory hacks for names from CNBC](https://www.cnbc.com/2016/09/21/11-memory-hacks-to-remember-the-names-of-everyone-you-meet.html)
+* [Funny game for exercising names memory](https://www.elevateapp.com/game/names)
 
