@@ -7,7 +7,7 @@ description: Processes are important and beneficial. They streamline the workflo
 ---
 Processes are important and beneficial. They streamline the workflows, help people make fewer mistakes and bring some degree of comfort - people tend to think that if we have a process, then we already achieved some degree of success.
 
-At Intercom, we have a very strong culture of solving right problems. We are ruthless around defining what the true problem is, how we solve it [using a cupcake](https://blog.intercom.com/start-with-a-cupcake/) and how eventually might it look like if the cupcake proves to be successful. To put it short - what is the problem and how will you measure that it’s solved. Take a step back and try to apply the same approach whenever you want to add new or adjust existing process.
+At Intercom, we have a very strong culture of solving the right problems. We are ruthless around defining what the true problem is, how we solve it [using a cupcake](https://blog.intercom.com/start-with-a-cupcake/) and how eventually might it look like if the cupcake proves to be successful. To put it short - what is the problem and how will you measure that it’s solved. Take a step back and try to apply the same approach whenever you want to add new or adjust existing process.
 
 Whenever you are designing a new process, the most important and the hardest parts will be to clearly define the problem. It’s crucial to not skip this step. If you don’t identify the problem clearly, why are you even starting? It’s a sign of tendency for bureaucracy - don’t go this way. This is the first step to make your people thinking “we became a corporation”. Processes are agile. They are innovating. They let you move fast. But only if you solve proper problems with them.
 
