@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Continue. Stop. Start"
+title:  "Continue. Stop. Start."
 author: "Kuba"
 comments: true
 description: Start - Stop - Continue is a common way to drive your retrospectives or even your growth. How to make sure you stay focused and not always Start new things?
