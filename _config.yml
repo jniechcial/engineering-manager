@@ -4,7 +4,7 @@ permalink:      /:year-:month-:day/:title
 title:          "Kuba Niechcial"
 paginate:       10
 baseurl:        ""
-url:            "https://niechcial.me"
+url:            "https://engineering-manager.com"
 email:          jakub.niechcial@gmail.com
 
 disqus:
@@ -34,7 +34,7 @@ markdown:       kramdown
 # About
 author:
   name:         Kuba Niechcial
-  url:          https://niechcial.me
+  url:          https://engineering-manager.com
   email:        jakub.niechcial@gmail.com
 
 # Custom vars
