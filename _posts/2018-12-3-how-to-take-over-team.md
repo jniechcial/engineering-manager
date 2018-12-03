@@ -5,7 +5,7 @@ author: "Kuba"
 comments: true
 description: Taking over a team is a challenge - the cogs are spinning and you don't have context about anything and usually there is no time to slow down.
 ---
-A few months ago I changed business area I work in at Intercom from Messenger and Platform to our Messages product. I started to manage one brand new and one existing and old team. Taking over such team is always a challenge. The cogs are spinning, everyone has formed opinions, you don't have context about anything and usually there is no time to slow down. Let me share some thoughts on what’s important when starting to manage an existing team.
+A few months ago I changed business area I work in at Intercom from Messenger and Platform to our Messages product. I started to manage one brand new and one existing and old team. Taking over such team is always a challenge. The cogs are spinning, everyone has formed opinions about you, you don't have context about anything and usually there is no time to slow down. Let me share some thoughts on what’s important when starting to manage an existing team.
 
 ## The code will be fine, think about people.
 Code, infrastructure or tests will be fine. Your fresh look a week after former manager won’t have any meaningful impact and probably will eat weeks of your time to build a better context than engineers in the team. Think about people and their anxiety and stress. People worry that they will need to rebuild their position, career or lose the rapport they had with the previous manager. Do your best to ease it. A genuinely successful transition means that everyone is excited about the change and no one leaves the team, or even worse - the company.
