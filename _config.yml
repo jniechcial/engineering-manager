@@ -1,8 +1,9 @@
 # Permalinks
 permalink:      /:year-:month-:day/:title
 # Setup
-title:          "Kuba Niechcial"
+title:          "Engineering Manager"
 paginate:       10
+paginate_path: "/blog/:num/"
 baseurl:        ""
 url:            "https://engineering-manager.com"
 email:          jakub.niechcial@gmail.com
@@ -14,7 +15,7 @@ include:
   - "_imgs"
 
 # SEO
-description:    Opinions, thoughts and shared lessons learned about engineering from world-class consulting and world-class product. Not best and most general, but personal.
+description:    Engineering-manager.com is the blog to learn about and grow as software engineering manager. Lessons from managers at top tech companies.
 twitter:
   username:     kubaniechcial
 social:
