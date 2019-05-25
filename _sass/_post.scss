@@ -15,7 +15,7 @@
   &-title {
     color: $default-shade;
     font-family: $sans-font;
-    font-size: 4rem;
+    font-size: 2.5rem;
     margin: 1rem 0;
     text-align: center;
   }
@@ -30,6 +30,10 @@
   p {
     margin: 0 0 1rem;
     text-align: justify;
+  }
+
+  ul > li {
+    margin-bottom: 10px;
   }
 
   a:hover {

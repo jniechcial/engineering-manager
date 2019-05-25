@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Blog
+robots: noindex
 ---
 
 <div class="catalogue">
@@ -12,7 +13,7 @@ title: Blog
         <div class="catalogue-line"></div>
 
         <p>
-          {{ post.content | truncatewords: 80 | strip_html }}
+          {{ post.content | truncatewords: 50 | strip_html }}
         </p>
 
       </div>
