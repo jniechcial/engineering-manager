@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "5 tips to running better 1:1s"
+title:  "5 tips on running better 1:1s"
 author: "Kuba"
 comments: true
 description: One on one meetings (1:1s) are the most important meeting you can have with your direct reports. Here are 5 tactical tips that you can apply to make your 1:1s better.
