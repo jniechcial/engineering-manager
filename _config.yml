@@ -7,6 +7,7 @@ paginate_path: "/blog/:num/"
 baseurl:        ""
 url:            "https://engineering-manager.com"
 email:          jakub.niechcial@gmail.com
+future:         false
 
 disqus:
   shortname: niechcial
