@@ -4,7 +4,12 @@ title:  "Top 10 books for every software engineering manager"
 author: "Kuba"
 comments: true
 description: In management, we look for common patterns to use frameworks, processes and principles from our experience. Reading books is one of the best ways to broaden horizons as engineering manager outside of your day to day work.
-image: "/_imgs/calendar-planning-month.png"
+image: "/_imgs/books.jpg"
+related: [
+  [ "2019-06-08/five-tips-on-running-better-one-on-ones", "5 tips on running better 1:1s", "One on one meetings (1:1s) are the most important meeting you can have with your direct reports. Here are 5 tactical tips that you can apply to make your 1:1s better."],
+  ["2019-01-14/ownership-explained-for-engineers-and-managers", "Ownership explained for Engineers and Managers", "Ability to take ownership is critical for your career and is a major step between junior and senior role. See how to look for high-impact ownership for engineers."],
+  ["2018-01-17/where-can-you-find-feedback-for-your-team", "Where can you find feedback for your team?", "Ambitious people love feedback. They are hungry for it and are aware that feedback is helping them grow faster. How can you find feedback that will really help your directs be better?"]
+]
 ---
 When I moved into the management world from being a software engineer, I quickly realised two huge surprises that I wasn’t expecting.
 
