@@ -5,6 +5,11 @@ author: "Kuba"
 comments: true
 description: One on one meetings (1:1s) are the most important meeting you can have with your direct reports. Here are 5 tactical tips that you can apply to make your 1:1s better.
 image: "/_imgs/one-on-ones-splash.jpg"
+related: [
+  [ "2020-02-01/top-books-for-engineering-managers", "Top 10 books for every software engineering manager", "In management, we look for common patterns to use frameworks, processes and principles from our experience. Reading books is one of the best ways to broaden horizons as engineering manager outside of your day to day work."],
+  ["2017-12-05/how-to-prepare-for-new-job-and-do-your-best", "How to prepare for a new job and do your best", "No matter if you are changing a job, moving to a new role inside your organization or restructuring current duties with your boss, you should take your time and think about what does it mean and how to manage it best."],
+  ["2018-12-3/how-to-take-over-team", "How to take over a team?", "Taking over a team is a challenge - the cogs are spinning and you don't have context about anything and usually there is no time to slow down."]
+]
 ---
 One on one meetings (1:1s) are the most important meeting you can have with your direct reports. It’s really hard to do a good job in just one blog post describing how to run 1:1s. They are just a tool towards a goal much greater than just a meeting - building candid relationships.
 

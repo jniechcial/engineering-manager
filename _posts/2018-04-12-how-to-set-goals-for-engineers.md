@@ -4,6 +4,11 @@ title:  "How to set goals for engineers?"
 author: "Kuba"
 comments: true
 description: Setting goals for engineers in your team is aimed to give them a clear path to grow, still focusing on the team's impact. How to do it effectively?
+related: [
+  [ "2019-06-08/five-tips-on-running-better-one-on-ones", "5 tips on running better 1:1s", "One on one meetings (1:1s) are the most important meeting you can have with your direct reports. Here are 5 tactical tips that you can apply to make your 1:1s better."],
+  ["2019-01-14/ownership-explained-for-engineers-and-managers", "Ownership explained for Engineers and Managers", "Ability to take ownership is critical for your career and is a major step between junior and senior role. See how to look for high-impact ownership for engineers."],
+  ["2018-01-17/where-can-you-find-feedback-for-your-team", "Where can you find feedback for your team?", "Ambitious people love feedback. They are hungry for it and are aware that feedback is helping them grow faster. How can you find feedback that will really help your directs be better?"]
+]
 ---
 ### Growing your people is the most important task.
 As a manager, your most important responsibility is to grow your people constantly. First of all, because people wants to grow and build their careers. Everyone has a steeper and more gentle growth curves in their lives, you included. Therefore, remember to leave your growth behind and look at your team through their current ambitions.

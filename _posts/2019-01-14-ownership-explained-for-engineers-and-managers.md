@@ -5,6 +5,11 @@ author: "Kuba"
 comments: true
 description: Ability to take ownership is critical for your career and is a major step between junior and senior role. See how to look for high-impact ownership for engineers.
 image: "/_imgs/ownership-hero.png"
+related: [
+  ["2019-04-13/master-skill-of-managing-up", "Master the skill of managing up", "Manging up is a key skill that you need to master. It will build trust with your manager and let you grow faster. Here is how to do it best."],
+  ["2017-11-05/growth-of-the-company-is-your-growth", "Growth of the company is your growth", "It may be common among engineers to hear that the company is growing too fast. What does the growth of the company actually mean for an engineer in startup?"],
+  ["2018-03-15/embrace-the-stretch", "Embrace the stretch", "Take advantage of opportunities, prioritize and do the most impactful work as it is the best way to iterate, learn and grow. Embrace the stretch."]
+]
 ---
 ## Introduction
 Ability to take ownership is critical for the majority of careers. **For me, as a manager, how people handle ownership and with what level of ambiguity is one of the clear distinctions between senior and junior positions.** And to explain my understanding of ambiguity - it’s not only engineering complexity; high ambiguity might mean that no one did this before at the company, that the potential risks are very big or that we don’t have strong hypothesis and will need to adjust product very quickly during this project. Ambiguity is about much, much more than just engineering.
