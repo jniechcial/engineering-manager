@@ -1,6 +1,5 @@
 ---
 # Use a comment to ensure Jekyll reads the file to be transformed into CSS later
-# only main files contain this front matter, not partials.
 ---
 
 @import 'variables';
@@ -12,29 +11,4 @@
 @import 'pagination';
 @import 'catalogue';
 @import 'social-buttons';
-
-.related__wrapper {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-}
-
-.related__post-wrapper {
-  box-shadow: 4px 4px 1px 1px;
-  border: 2px solid black;
-  padding: 10px;
-  margin: 10px;
-  width: 33%;
-}
-
-.related__post-inner {
-  > h4 {
-    margin-top: 0px;
-    margin-bottom: 10px;
-    font-size: 18px;
-  }
-
-  > p {
-    font-size: 16px;
-  }
-}
+@import 'recommendations';
