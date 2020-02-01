@@ -14,6 +14,19 @@ layout: default
     <li><a href="mailto:{{ site.email }}" target="_blank" title="Send email"><img alt="Send email" src="/icons/Email.png" /></a></li>
   </ul>
 
+  {% if page.related %}
+    <div class="related__wrapper">
+    {% for post in page.related %}
+      <div class="related__post-wrapper">
+        <div class="related__post-inner">
+          <h4><a href="{{ site.url }}/{{ post[0] }}">{{ post[1] }}</a></h4>
+          <p>{{ post[2] }}</p>
+        </div>
+      </div>
+    {% endfor %}
+    </div>
+  {% endif %}
+
   {% if page.comments %}
     <div id="disqus_thread"></div>
     <script>
