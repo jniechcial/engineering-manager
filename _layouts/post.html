@@ -27,7 +27,9 @@ layout: default
     </div>
   {% endif %}
 
-  {% include newsletter.html %}
+  <div class="post-newsletter-wrapper">
+    {% include newsletter.html %}
+  </div>
 
   {% if page.comments %}
     <div id="disqus_thread"></div>
