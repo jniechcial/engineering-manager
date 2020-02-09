@@ -244,6 +244,7 @@ PLATFORMS
 DEPENDENCIES
   faraday (= 0.17.3)
   github-pages
+  jekyll-feed
 
 BUNDLED WITH
    1.17.3
