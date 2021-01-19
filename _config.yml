@@ -2,7 +2,7 @@
 permalink:      /:year-:month-:day/:title
 # Setup
 title:          "Engineering Manager"
-paginate:       5
+paginate:       10
 paginate_path: "/blog/:num/"
 baseurl:        ""
 url:            "https://engineering-manager.com"
