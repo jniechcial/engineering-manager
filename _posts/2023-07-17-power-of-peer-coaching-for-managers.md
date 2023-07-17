@@ -35,4 +35,7 @@ This goal is also significant. It provides a safe space for improving coaching s
 ## Increasing Accountability through Invested Support
 While this is the last priority, it is still a valuable goal. Essentially, it brings healthy peer pressure. Participants discuss their work and what they aim to achieve, creating an unspoken expectation of self-accountability during subsequent coaching sessions a week or two later.
 
+## Closing thoughts
 So far we had great positive feedback about these sessions. Folks in my team really enjoy them, they built stronger relationships with each other, they are less dependent on me and continuously growing their exposure. For a few quarters, this was consistently the highlight of the culture in our team. As much as it feels awkward at the start, it’s definitely worth doing.
+
+If you are managing managers, consider starting it. If you are an engineering manager, suggest that to your team!
