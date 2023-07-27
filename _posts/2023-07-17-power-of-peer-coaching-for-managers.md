@@ -5,6 +5,11 @@ author: "Kuba"
 comments: true
 description: "One of the most influential thing on your growth are the peers you work with. They provide you new perspectives, play devil advocate or brainstorm new ideas. Find them as engineering manager."
 image: "/_imgs/peer-coaching.jpg"
+related: [
+  ["2019-04-13/master-skill-of-managing-up", "Master the skill of managing up", "Manging up is a key skill that you need to master. It will build trust with your manager and let you grow faster. Here is how to do it best."],
+  ["2018-01-17/where-can-you-find-feedback-for-your-team", "Where can you find feedback for your team?", "Ambitious people love feedback. They are hungry for it and are aware that feedback is helping them grow faster. How can you find feedback that will really help your directs be better?"],
+  ["2020-01-20-from-reactive-proactive-engineering-manager", "From reactive to proactive engineering manager", "One of indicators of seniority for engineering managers is how much of their time is spent in a proactive instead of reactive manner. How to get better at this?"]
+]
 ---
 In a fast-paced environment of software today, it's crucial for engineering managers to continually improve their skills and seek support to grow in their roles. While traditional coaching by your manager and mentoring have their merits, there's a powerful tool that often goes untapped: peer coaching within your team of engineering managers.
 
