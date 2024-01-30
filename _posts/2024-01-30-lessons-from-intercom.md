@@ -94,7 +94,7 @@ When we worked on Fin, our AI team was fundamental to making it work, we wouldn�
 ### 3. Monoliths can scale very well, give solid deployment safety and high leverage for developer experience and observability.
 I continue to be amazed how well Intercom Rails monolith scaled over the years. Exceptional engineering decisions, keeping it simple, huge leverage that our only developer experience team has, and sticking to proven cloud technologies helped us navigate growth really well. Monolith is also something that keeps our ability to ship very fast, very often (by sweating things like fast rollbacks or quick CI). We found a few services we owned painful to work with in comparison - teams had to be slowed down by maintaining their own dependencies, deployment pipelines or infrastructure updates. I never worked in professional, high-scale microservices architecture but can’t wait to learn about the trade-offs there.
 
-### 4. How often you ship is critical. [It’s your heartbeat.](https://www.intercom.com/blog/shipping-is-your-companys-heartbeat/)### 
+### 4. How often you ship is critical. [It’s your heartbeat.](https://www.intercom.com/blog/shipping-is-your-companys-heartbeat/) 
 You might not ship it to customers, but there is always a way to ship to production in a safe way. If you can’t find it, keep looking. It builds muscles for accelerating even more when necessary, and keeps you from losing impatience culturally. Show off the progress, ideally on a regular company-wide demo.
 
 ### 5. Create plenty of system models, mental models, apply different layers of abstractions. Looking at the same problem from different angles really expands your horizons and builds alignment.
