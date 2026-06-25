@@ -10,7 +10,7 @@ main {
 }
 
 .nav-container {
-  align-items: center;
+  align-items: stretch; // buttons grow to match the title's height when it wraps
   display: flex;
   gap: 1rem;
   justify-content: space-between;
@@ -45,17 +45,20 @@ main {
 }
 
 .nav-links {
-  align-items: center;
+  align-items: stretch;
   display: flex;
   gap: .6rem;
   list-style: none;
   margin: 0;
   padding: 0;
 
+  li { display: flex; }
+
   a {
+    align-items: center;
     border: 2px solid var(--ink);
     color: var(--ink);
-    display: inline-block;
+    display: flex;
     font-family: $display-font;
     font-size: .78rem;
     font-weight: 600;
