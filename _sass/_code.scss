@@ -4,11 +4,12 @@ code {
 }
 
 code {
-  background-color: var(--rule-soft);
-  border-radius: 3px;
-  color: var(--accent-deep);
+  background-color: var(--accent-2);
+  border: 1.5px solid var(--ink);
+  color: #000;
   font-size: 85%;
-  padding: .2em .45em;
+  font-weight: 500;
+  padding: .1em .35em;
 }
 
 pre {
@@ -17,16 +18,18 @@ pre {
 
 pre code {
   background-color: transparent;
+  border: 0;
   color: inherit;
   font-size: 100%;
   padding: 0;
 }
 
 .highlight {
-  background-color: var(--rule-soft);
-  border-radius: 6px;
+  background-color: var(--card);
+  border: $border-width solid var(--ink);
+  @include hard-shadow(5px, 5px);
   line-height: 1.45;
-  margin: 0 0 1.3rem;
+  margin: 0 0 1.8rem;
   padding: 1rem 1.2rem;
 
   pre {

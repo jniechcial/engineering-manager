@@ -1,27 +1,28 @@
 .catalogue {
   margin: 0 auto;
   max-width: $wide;
-  padding: 2rem 1.5rem 0;
+  padding: 2.5rem 1.5rem 0;
   width: 100%;
 }
 
 .catalogue-item {
-  border-bottom: 1px solid var(--rule);
+  @include brutal-card(5px, 5px);
   display: block;
-  padding: 2rem 0;
+  margin-bottom: 1.4rem;
+  padding: 1.5rem 1.6rem;
+  text-decoration: none;
 
-  &:last-child { border-bottom: 0; }
-
-  &:hover {
-    text-decoration: none;
-    .catalogue-title { color: var(--accent); }
-  }
+  &:nth-of-type(4n + 1) { background: var(--tint-1); }
+  &:nth-of-type(4n + 2) { background: var(--tint-2); }
+  &:nth-of-type(4n + 3) { background: var(--tint-3); }
+  &:nth-of-type(4n + 4) { background: var(--tint-4); }
 }
 
 .catalogue-time {
   color: var(--meta);
-  font-family: $sans-font;
-  font-size: .75rem;
+  font-family: $display-font;
+  font-size: .72rem;
+  font-weight: 600;
   letter-spacing: .06em;
   text-transform: uppercase;
 }
@@ -30,16 +31,15 @@
   color: var(--ink);
   display: block;
   font-family: $display-font;
-  font-size: 1.8rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  line-height: 1.15;
+  font-size: 1.7rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
   margin: .4rem 0 .6rem;
-  @include transition(color .15s ease);
 }
 
 .catalogue-item p {
   color: var(--ink-soft);
-  font-size: 1.02rem;
+  font-size: 1rem;
   margin: 0;
 }

@@ -1,18 +1,41 @@
 // ── Typography ──────────────────────────────────────────────
-$display-font: 'Fraunces', Georgia, 'Times New Roman', serif;
-$serif-font:   'Newsreader', Georgia, 'Times New Roman', serif;
-$sans-font:    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+$display-font: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif;
+$body-font:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 $mono-font:    'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-// ── Measure / spacing ───────────────────────────────────────
-$measure: 42rem;  // comfortable reading column
-$wide:    52rem;  // home / catalogue width
+// Back-compat aliases (older partials reference these names)
+$serif-font:   $body-font;
+$sans-font:    $body-font;
 
-// ── Mixins ──────────────────────────────────────────────────
+// ── Measure / spacing ───────────────────────────────────────
+$measure: 46rem;  // single container width — home, blog, posts all align
+$wide:    46rem;
+
+// ── Neo-brutalist building blocks ───────────────────────────
+$border-width: 3px;
+
 @mixin box-sizing($type: border-box) {
   box-sizing: $type;
 }
 
 @mixin transition($args...) {
   transition: $args;
+}
+
+// Hard, offset, blur-free shadow — the brutalist signature.
+@mixin hard-shadow($x: 4px, $y: 4px) {
+  box-shadow: #{$x} #{$y} 0 var(--shadow);
+}
+
+// A bordered block that "lifts" on hover by pressing into its shadow.
+@mixin brutal-card($x: 5px, $y: 5px) {
+  background: var(--card);
+  border: $border-width solid var(--ink);
+  @include hard-shadow($x, $y);
+  @include transition(transform .12s ease, box-shadow .12s ease);
+
+  &:hover {
+    transform: translate(2px, 2px);
+    box-shadow: #{$x - 2px} #{$y - 2px} 0 var(--shadow);
+  }
 }

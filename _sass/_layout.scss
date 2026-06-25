@@ -5,64 +5,93 @@ main {
 
 // ── Top navigation ──────────────────────────────────────────
 .nav {
-  border-bottom: 1px solid var(--rule);
+  background: var(--paper);
+  border-bottom: $border-width solid var(--ink);
 }
 
 .nav-container {
-  align-items: baseline;
+  align-items: center;
   display: flex;
+  gap: 1rem;
   justify-content: space-between;
   margin: 0 auto;
   max-width: $wide;
-  padding: 1.6rem 1.5rem;
+  padding: 1rem 1.5rem;
   width: 100%;
 }
 
 .nav-title {
-  color: var(--ink);
+  background: var(--accent-3);
+  border: 2px solid var(--ink);
+  @include hard-shadow(3px, 3px);
+  color: var(--on-accent);
+  display: inline-block;
   font-family: $display-font;
-  font-size: 1.15rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
+  font-size: .82rem;
+  font-weight: 700;
+  letter-spacing: .06em;
   margin: 0;
-  @include transition(color .15s ease);
+  padding: .45rem .7rem;
+  text-decoration: none;
+  text-transform: uppercase;
+  @include transition(transform .12s ease, box-shadow .12s ease, background-color .12s ease);
 
-  &:hover { color: var(--accent); }
+  &:hover {
+    background: var(--accent);
+    color: var(--on-accent);
+    transform: translate(2px, 2px);
+    @include hard-shadow(1px, 1px);
+  }
 }
 
 .nav-links {
+  align-items: center;
   display: flex;
-  gap: 1.6rem;
+  gap: .6rem;
   list-style: none;
   margin: 0;
   padding: 0;
 
   a {
-    color: var(--ink-soft);
-    font-family: $sans-font;
-    font-size: .8rem;
+    border: 2px solid var(--ink);
+    color: var(--ink);
+    display: inline-block;
+    font-family: $display-font;
+    font-size: .78rem;
+    font-weight: 600;
     letter-spacing: .04em;
+    padding: .35rem .7rem;
+    text-decoration: none;
     text-transform: uppercase;
+    @include transition(background-color .12s ease, color .12s ease);
 
-    &:hover { color: var(--accent); text-decoration: none; }
+    &:hover { background: var(--accent); color: var(--on-accent); }
   }
 }
 
 // ── Footer ──────────────────────────────────────────────────
 .footer {
-  border-top: 1px solid var(--rule);
+  background: var(--ink);
+  border-top: $border-width solid var(--ink);
   margin-top: 5rem;
 }
 
 .footer-container {
-  color: var(--meta);
-  font-family: $sans-font;
+  color: var(--paper);
+  font-family: $display-font;
   font-size: .8rem;
+  font-weight: 500;
+  letter-spacing: .04em;
   margin: 0 auto;
   max-width: $wide;
-  padding: 2.5rem 1.5rem;
+  padding: 2.2rem 1.5rem;
   text-align: center;
+  text-transform: uppercase;
   width: 100%;
 
-  a { color: var(--meta); &:hover { color: var(--accent); } }
+  a {
+    color: var(--accent);
+    text-decoration: none;
+    &:hover { background: var(--accent); color: var(--on-accent); }
+  }
 }

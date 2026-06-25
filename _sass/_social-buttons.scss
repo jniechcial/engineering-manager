@@ -1,8 +1,9 @@
 .share-buttons {
   align-items: center;
-  border-top: 1px solid var(--rule);
+  border-top: $border-width solid var(--ink);
   display: flex;
-  gap: 1.4rem;
+  flex-wrap: wrap;
+  gap: .8rem;
   list-style: none;
   margin: 3rem 0 0;
   padding: 1.6rem 0 0;
@@ -10,20 +11,33 @@
   li { margin: 0; }
 
   .share-label {
-    color: var(--meta);
-    font-family: $sans-font;
+    color: var(--ink);
+    font-family: $display-font;
     font-size: .75rem;
+    font-weight: 700;
     letter-spacing: .08em;
     margin-right: .2rem;
     text-transform: uppercase;
   }
 
   a {
-    color: var(--ink-soft);
+    align-items: center;
+    background: var(--card);
+    border: 2px solid var(--ink);
+    @include hard-shadow(3px, 3px);
+    color: var(--ink);
     display: inline-flex;
+    padding: .5rem;
+    text-decoration: none;
+    @include transition(transform .12s ease, box-shadow .12s ease, background-color .12s ease);
 
-    &:hover { color: var(--accent); }
+    &:hover {
+      background: var(--accent);
+      color: var(--on-accent);
+      transform: translate(2px, 2px);
+      @include hard-shadow(1px, 1px);
+    }
 
-    svg { height: 1.15rem; width: 1.15rem; }
+    svg { display: block; height: 1.15rem; width: 1.15rem; }
   }
 }

@@ -1,49 +1,46 @@
 .post {
   margin: 0 auto;
   max-width: $measure;
-  padding: 3.5rem 1.5rem 2rem;
+  padding: 3rem 1.5rem 2rem;
   width: 100%;
 }
 
 .post-meta {
-  color: var(--meta);
-  font-family: $sans-font;
-  font-size: .8rem;
-  letter-spacing: .06em;
-  margin-bottom: 1rem;
-  text-transform: uppercase;
+  @extend %chip;
+  background: var(--accent);
+  margin-bottom: 1.2rem;
 
+  time { font-style: normal; }
   span { font-style: normal; }
 }
 
 .post-title {
   color: var(--ink);
   font-family: $display-font;
-  font-size: 2.4rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
-  margin: 0 0 2.4rem;
+  font-size: 2.3rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.02;
+  margin: 0 0 2.2rem;
 
   @media (min-width: 600px) {
-    font-size: 3rem;
+    font-size: 3.2rem;
   }
 }
 
 // Article body
 .post-content {
-  font-size: 1.14rem;
+  font-size: 1.1rem;
 
   h2 { margin-top: 2.6rem; }
   h3 { margin-top: 2rem; }
 
   > p:first-of-type {
     color: var(--ink);
-    font-size: 1.26rem;
-    line-height: 1.6;
+    font-size: 1.2rem;
+    font-weight: 500;
+    line-height: 1.55;
   }
-
-  a { text-decoration: underline; text-underline-offset: 2px; }
 
   ul > li { margin-bottom: .5rem; }
 }

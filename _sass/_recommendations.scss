@@ -1,22 +1,19 @@
 .related {
-  border-top: 1px solid var(--rule);
+  border-top: $border-width solid var(--ink);
   margin-top: 3rem;
   padding-top: 2rem;
 }
 
 .related-label {
-  color: var(--meta);
-  font-family: $sans-font;
-  font-size: .8rem;
-  font-weight: 600;
-  letter-spacing: .12em;
+  @extend %chip;
+  background: var(--accent-4);
+  color: #fff;
   margin: 0 0 1.4rem;
-  text-transform: uppercase;
 }
 
 .related__wrapper {
   display: grid;
-  gap: 1rem;
+  gap: 1.1rem;
   grid-template-columns: 1fr;
 
   @media (min-width: 700px) {
@@ -25,28 +22,32 @@
 }
 
 .related__post-wrapper {
-  background: var(--card);
-  border: 1px solid var(--rule);
-  border-radius: 6px;
+  @include brutal-card(4px, 4px);
   padding: 1.1rem;
-  @include transition(border-color .15s ease);
 
-  &:hover { border-color: var(--accent); }
+  &:nth-of-type(3n + 1) { background: var(--tint-1); }
+  &:nth-of-type(3n + 2) { background: var(--tint-2); }
+  &:nth-of-type(3n + 3) { background: var(--tint-3); }
 }
 
 .related__post-inner {
   h4 {
     font-family: $display-font;
     font-size: 1.05rem;
-    line-height: 1.2;
+    font-weight: 700;
+    line-height: 1.15;
     margin: 0 0 .5rem;
   }
 
   p {
     color: var(--ink-soft);
-    font-size: .9rem;
+    font-size: .88rem;
     margin: 0;
   }
 
-  a { text-decoration: none; }
+  a {
+    color: var(--ink);
+    text-decoration: none;
+    &:hover { background: transparent; color: var(--accent-deep); }
+  }
 }

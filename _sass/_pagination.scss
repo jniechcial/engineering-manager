@@ -1,35 +1,56 @@
 .pagination {
-  border-top: 1px solid var(--rule);
-  font-family: $sans-font;
-  margin: 0 auto;
+  align-items: center;
+  border-top: $border-width solid var(--ink);
+  display: flex;
+  font-family: $display-font;
+  gap: 1rem;
+  justify-content: center;
+  margin: 2.5rem auto 0;
   max-width: $wide;
   padding: 2rem 1.5rem 0;
   position: relative;
-  text-align: center;
   width: 100%;
 
   span {
-    color: var(--meta);
+    color: var(--ink);
     font-size: .9rem;
+    font-weight: 600;
   }
 
   .top {
-    color: var(--meta);
-    font-size: .85rem;
+    background: var(--card);
+    border: 2px solid var(--ink);
+    color: var(--ink);
+    font-size: .78rem;
+    font-weight: 600;
     letter-spacing: .05em;
+    padding: .4rem .8rem;
+    text-decoration: none;
     text-transform: uppercase;
 
-    &:hover { color: var(--accent); text-decoration: none; }
+    &:hover { background: var(--accent); color: var(--on-accent); }
   }
 
   .arrow {
-    color: var(--ink-soft);
-    font-size: 1.3rem;
+    background: var(--card);
+    border: 2px solid var(--ink);
+    @include hard-shadow(3px, 3px);
+    color: var(--ink);
+    font-size: 1.1rem;
+    line-height: 1;
+    padding: .35rem .7rem;
     position: absolute;
-    top: 1.8rem;
+    text-decoration: none;
+    top: 1.7rem;
+    @include transition(transform .12s ease, box-shadow .12s ease, background-color .12s ease);
 
     &:hover,
-    &:focus { color: var(--accent); text-decoration: none; }
+    &:focus {
+      background: var(--accent);
+      color: var(--on-accent);
+      transform: translate(2px, 2px);
+      @include hard-shadow(1px, 1px);
+    }
   }
 
   .left  { left: 1.5rem; }
