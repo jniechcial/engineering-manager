@@ -6,27 +6,26 @@
   <body>
     <nav class="nav">
       <div class="nav-container">
-        <a href="{{ site.baseurl }}/">
-          <h2 class="nav-title">{{ site.title }}</h2>
-        </a>
-        <ul>
-          <li><a href="{{ '/blog' | prepend: site.baseurl }}">Blog</a></li>
+        <a href="{{ '/' | relative_url }}" class="nav-title">{{ site.title }}</a>
+        <ul class="nav-links">
+          <li><a href="{{ '/' | relative_url }}">About</a></li>
+          <li><a href="{{ '/blog' | relative_url }}">Writing</a></li>
         </ul>
-    </div>
-  </nav>
+      </div>
+    </nav>
 
     <main>
       {{ content }}
     </main>
 
-    <footer>
-      <span>
-        &copy; <time datetime="{{ site.time }}">{{ site.time | date: '%Y' }}</time> {{ site.author.name }}. Made with Jekyll using the <a href="https://github.com/chesterhow/tale/">Tale</a> theme.
-      </span>
+    <footer class="footer">
+      <div class="footer-container">
+        &copy; <time datetime="{{ site.time }}">{{ site.time | date: '%Y' }}</time> {{ site.author.name }}
+      </div>
     </footer>
+
     {% if jekyll.environment == 'production' %}
-      {% include analytics.html %}    
-      {% include hubspot.html %}  
+      {% include analytics.html %}
     {% endif %}
   </body>
 </html>

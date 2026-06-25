@@ -1,33 +1,52 @@
-@media (min-width: 768px) {
-  .related__wrapper {
-    display: flex;
-  }
+.related {
+  border-top: 1px solid var(--rule);
+  margin-top: 3rem;
+  padding-top: 2rem;
+}
 
-  .related__post-wrapper {
-    width: 33%;
-  }
+.related-label {
+  color: var(--meta);
+  font-family: $sans-font;
+  font-size: .8rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  margin: 0 0 1.4rem;
+  text-transform: uppercase;
 }
 
 .related__wrapper {
-  width: 100%;
-  justify-content: space-between;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+
+  @media (min-width: 700px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .related__post-wrapper {
-  box-shadow: 4px 4px 1px 1px;
-  border: 2px solid black;
-  padding: 10px;
-  margin: 10px;
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 1.1rem;
+  @include transition(border-color .15s ease);
+
+  &:hover { border-color: var(--accent); }
 }
 
 .related__post-inner {
-  > h4 {
-    margin-top: 0px;
-    margin-bottom: 10px;
-    font-size: 18px;
+  h4 {
+    font-family: $display-font;
+    font-size: 1.05rem;
+    line-height: 1.2;
+    margin: 0 0 .5rem;
   }
 
-  > p {
-    font-size: 16px;
+  p {
+    color: var(--ink-soft);
+    font-size: .9rem;
+    margin: 0;
   }
+
+  a { text-decoration: none; }
 }

@@ -1,44 +1,37 @@
 .pagination {
-  border-top: .5px solid $grey-2;
-  font-family: $palatino;
-  padding-top: 2rem;
+  border-top: 1px solid var(--rule);
+  font-family: $sans-font;
+  margin: 0 auto;
+  max-width: $wide;
+  padding: 2rem 1.5rem 0;
   position: relative;
   text-align: center;
+  width: 100%;
 
   span {
-    color: $default-shade;
-    font-size: 1.1rem;
+    color: var(--meta);
+    font-size: .9rem;
   }
 
   .top {
-    @include transition(all .3s ease-out);
-    color: $default-color;
-    font-family: $sans-font;
-    font-size: 1.1rem;
-    opacity: .6;
+    color: var(--meta);
+    font-size: .85rem;
+    letter-spacing: .05em;
+    text-transform: uppercase;
 
-    &:hover {
-      opacity: 1;
-    }
+    &:hover { color: var(--accent); text-decoration: none; }
   }
 
   .arrow {
-    @include transition(all .3s ease-out);
-    color: $default-color;
+    color: var(--ink-soft);
+    font-size: 1.3rem;
     position: absolute;
+    top: 1.8rem;
 
     &:hover,
-    &:focus {
-      opacity: .6;
-      text-decoration: none;
-    }
+    &:focus { color: var(--accent); text-decoration: none; }
   }
 
-  .left {
-    left: 0;
-  }
-
-  .right {
-    right: 0;
-  }
+  .left  { left: 1.5rem; }
+  .right { right: 1.5rem; }
 }

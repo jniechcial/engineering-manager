@@ -1,91 +1,68 @@
-.container {
+main {
   margin: 0 auto;
-  max-width: 800px;
-  width: 80%;
+  width: 100%;
 }
 
-main,
-footer,
-.nav-container {
-  margin: 0 auto;
-  max-width: 800px;
-  width: 80%;
-}
-
+// ── Top navigation ──────────────────────────────────────────
 .nav {
-  box-shadow: 0 2px 2px -2px $shadow-color;
-  overflow: auto;
+  border-bottom: 1px solid var(--rule);
+}
 
-  &-container {
-    margin: 1rem auto;
-    position: relative;
-    text-align: center;
-  }
+.nav-container {
+  align-items: baseline;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+  max-width: $wide;
+  padding: 1.6rem 1.5rem;
+  width: 100%;
+}
 
-  &-title {
-    @include transition(all .2s ease-out);
-    color: $default-color;
-    display: inline-block;
-    margin: 0;
-    padding-right: .2rem;
+.nav-title {
+  color: var(--ink);
+  font-family: $display-font;
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0;
+  @include transition(color .15s ease);
 
-    &:hover,
-    &:focus {
-      opacity: .6;
-    }
-  }
+  &:hover { color: var(--accent); }
+}
 
-  ul {
-    list-style-type: none;
-    margin: 1rem 0 0;
-    padding: 0;
-    text-align: center;
-  }
-
-  li {
-    @include transition(all .2s ease-out);
-    color: $default-color;
-    display: inline-block;
-    opacity: .6;
-    padding: 0 2rem 0 0;
-
-    &:last-child {
-      padding-right: 0;
-    }
-
-    &:hover,
-    &:focus {
-      opacity: 1;
-    }
-  }
+.nav-links {
+  display: flex;
+  gap: 1.6rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 
   a {
-    color: $default-color;
+    color: var(--ink-soft);
     font-family: $sans-font;
-  }
-}
-
-@media (min-width: 600px) {
-  .nav {
-    &-container {
-      text-align: left;
-    }
-
-    ul {
-      bottom: 0;
-      position: absolute;
-      right: 0;
-    }
-  }
-}
-
-footer {
-  font-family: $palatino;
-  padding: 2rem 0;
-  text-align: center;
-
-  span {
-    color: $default-color;
     font-size: .8rem;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+
+    &:hover { color: var(--accent); text-decoration: none; }
   }
+}
+
+// ── Footer ──────────────────────────────────────────────────
+.footer {
+  border-top: 1px solid var(--rule);
+  margin-top: 5rem;
+}
+
+.footer-container {
+  color: var(--meta);
+  font-family: $sans-font;
+  font-size: .8rem;
+  margin: 0 auto;
+  max-width: $wide;
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  width: 100%;
+
+  a { color: var(--meta); &:hover { color: var(--accent); } }
 }

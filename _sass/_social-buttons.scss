@@ -1,23 +1,29 @@
-ul.share-buttons{
-  list-style: none;
-  padding: 0;
-  justify-content: center;
+.share-buttons {
+  align-items: center;
+  border-top: 1px solid var(--rule);
   display: flex;
-}
+  gap: 1.4rem;
+  list-style: none;
+  margin: 3rem 0 0;
+  padding: 1.6rem 0 0;
 
-ul.share-buttons li{
-  display: inline;
-  margin: 0 20px;
-  margin-top: 20px;
-}
+  li { margin: 0; }
 
-ul.share-buttons .sr-only{
-  position: absolute;
-  clip: rect(1px 1px 1px 1px);
-  clip: rect(1px, 1px, 1px, 1px);
-  padding: 0;
-  border: 0;
-  height: 1px;
-  width: 1px;
-  overflow: hidden;
+  .share-label {
+    color: var(--meta);
+    font-family: $sans-font;
+    font-size: .75rem;
+    letter-spacing: .08em;
+    margin-right: .2rem;
+    text-transform: uppercase;
+  }
+
+  a {
+    color: var(--ink-soft);
+    display: inline-flex;
+
+    &:hover { color: var(--accent); }
+
+    svg { height: 1.15rem; width: 1.15rem; }
+  }
 }

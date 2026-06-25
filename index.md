@@ -1,16 +1,14 @@
 ---
 layout: home
-title: Engineering Manager
-description: Engineering-manager.com is the blog to learn about and grow as software engineering manager. Lessons from managers at top tech companies.
+title: Kuba Niechcial
+description: Kuba Niechcial — engineering leader. Writing about building and leading software engineering teams, drawn from years at Intercom, HubSpot, and Fin.
+role: Engineering Leader
+lede: I build and lead software engineering teams — and write about what I learn along the way.
+arc: "Intercom · HubSpot · Fin"
 ---
 
-### Are you an engineering manager? 👩‍💻
-It’s hard to be a good engineering manager. We often struggle to accept what moving from senior engineering positions to management means. A switch from being an experienced domain leader to almost a junior position and a separate career. We need to share our experiences to grow as the domain same as the software did in last years thanks to open source.
+For over a decade I've grown engineers, teams, and organisations at some of the best product companies in the industry. I care most about the unglamorous craft of leadership: building trust, setting a high bar, and creating the conditions for great engineers to do their best work.
 
-### Are you wondering why management is important? 🤔
-People are a critical factor in the success of your business. You attract, hire and grow engineers in your company. But on average, engineers change jobs every two years. Direct, honest and excellent management is the most crucial way to increase retention. People leave managers, not companies.
+At **Intercom** I spent six years as a Director of Engineering across three product groups — from end-user experiences to platform and high-scale outbound messaging — leading managers and the teams behind them. At **HubSpot** I worked on engineering at serious scale. Today I'm focused on **Fin**, building at the frontier of AI agents.
 
-### Excited to see you! 👋
-Welcome to the Engineering Manager. I am experienced Director of Engineering at Intercom, one of the fastest growing software products with exceptional culture. I have managed multiple different teams from the end user focused, through the platform, up to high-scale outbound messaging. I also managed over 70+ people engineering organisation in one of the top software consulting company in Poland.
-
-I want to share my lessons, knowledge and retrospectively learn more as I describe my experiences.
+This is where I share lessons, frameworks, and the occasional hard-won mistake — written for engineering managers, by one.

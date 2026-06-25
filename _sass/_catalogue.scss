@@ -1,39 +1,45 @@
 .catalogue {
-  &-item {
-    border-bottom: 1px solid $grey-2;
-    color: $default-color;
-    display: inline-block;
-    padding: 2rem 0;
+  margin: 0 auto;
+  max-width: $wide;
+  padding: 2rem 1.5rem 0;
+  width: 100%;
+}
 
-    &:hover .catalogue-line,
-    &:focus .catalogue-line {
-      width: 5rem;
-    }
+.catalogue-item {
+  border-bottom: 1px solid var(--rule);
+  display: block;
+  padding: 2rem 0;
 
-    &:last-child {
-      border: 0;
-    }
+  &:last-child { border-bottom: 0; }
+
+  &:hover {
+    text-decoration: none;
+    .catalogue-title { color: var(--accent); }
   }
+}
 
-  &-time {
-    color: $default-tint;
-    font-family: $palatino;
-    letter-spacing: .5px;
-  }
+.catalogue-time {
+  color: var(--meta);
+  font-family: $sans-font;
+  font-size: .75rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
 
-  &-title {
-    color: $default-shade;
-    display: block;
-    font-family: $sans-font;
-    font-size: 2rem;
-    font-weight: 700;
-    margin: .5rem 0;
-  }
+.catalogue-title {
+  color: var(--ink);
+  display: block;
+  font-family: $display-font;
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  margin: .4rem 0 .6rem;
+  @include transition(color .15s ease);
+}
 
-  &-line {
-    @include transition(all .3s ease-out);
-    border-top: .2rem solid $default-shade;
-    display: block;
-    width: 2rem;
-  }
+.catalogue-item p {
+  color: var(--ink-soft);
+  font-size: 1.02rem;
+  margin: 0;
 }

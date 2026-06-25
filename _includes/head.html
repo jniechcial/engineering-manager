@@ -5,74 +5,15 @@
   {% seo %}
 
   {% if page.robots %}
-    <meta name="robots" content="{{page.robots}}" />
+    <meta name="robots" content="{{ page.robots }}" />
   {% endif %}
 
-  <!-- CSS -->
-  <link href="//cdn-images.mailchimp.com/embedcode/classic-10_7.css" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" href="{{ site.baseurl }}/styles.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
-  <link href="//cdn-images.mailchimp.com/embedcode/classic-10_7.css" rel="stylesheet" type="text/css">
-  <style type="text/css">
-    #mc_embed_signup{
-      background:#ececec; clear:left; font:14px Helvetica,Arial,sans-serif;
-      padding: 20px;
-    }
-    #mc_embed_signup form {
-    }
+  <link rel="icon" href="{{ '/favicon.ico' | relative_url }}">
 
-    #mc_embed_signup h2 {
-      text-align: left;
-      margin: 10px 0;
-      font-size: 28px;
-    }
+  <!-- Fonts: Fraunces (display serif) + Newsreader (reading serif) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
 
-    #mc_embed_signup p {
-      text-align: left;
-      font-size: 20px;
-    }
-
-    #mc_embed_signup .mc-field-group label {
-      color: #353535;
-      display: block;
-      font-family: "Helvetica Neue","Segoe UI",Helvetica,Arial,sans-serif;
-      font-size: 10px;
-      margin: .5rem 0;
-      text-align: left;
-      margin-bottom: 0px !important;
-    }
-    #mc_embed_signup .mc-field-group {
-      width: 100%
-    }
-
-    #mc_embed_signup .button {
-      background-color: #353535;
-      border-radius: 0;
-      height: 40px;
-      display: block;
-    }
-
-    #mc_embed_signup .mc-field-group input {
-      font-size: 16px;
-    }
-    #mc_embed_signup #mc-embedded-subscribe-form div.mce_inline_error {
-      background-color: transparent;
-      margin: 0px;
-      padding: 10px 0 0;
-    }
-
-    #mc_embed_signup div#mce-responses {
-      display: block;
-      margin: 0;
-      padding: 0;
-    }
-
-    #mc_embed_signup div.response {
-      display: block;
-      margin: 0;
-      padding: 0 0 20px;
-      width: 100%;
-    }
-
-  </style>
+  <link rel="stylesheet" href="{{ '/styles.css' | relative_url }}">
 </head>
