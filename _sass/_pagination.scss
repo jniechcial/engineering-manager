@@ -1,44 +1,58 @@
 .pagination {
-  border-top: .5px solid $grey-2;
-  font-family: $palatino;
-  padding-top: 2rem;
+  align-items: center;
+  border-top: $border-width solid var(--ink);
+  display: flex;
+  font-family: $display-font;
+  gap: 1rem;
+  justify-content: center;
+  margin: 2.5rem auto 0;
+  max-width: $wide;
+  padding: 2rem 1.5rem 0;
   position: relative;
-  text-align: center;
+  width: 100%;
 
   span {
-    color: $default-shade;
-    font-size: 1.1rem;
+    color: var(--ink);
+    font-size: .9rem;
+    font-weight: 600;
   }
 
   .top {
-    @include transition(all .3s ease-out);
-    color: $default-color;
-    font-family: $sans-font;
-    font-size: 1.1rem;
-    opacity: .6;
+    background: var(--card);
+    border: 2px solid var(--ink);
+    color: var(--ink);
+    font-size: .78rem;
+    font-weight: 600;
+    letter-spacing: .05em;
+    padding: .4rem .8rem;
+    text-decoration: none;
+    text-transform: uppercase;
 
-    &:hover {
-      opacity: 1;
-    }
+    &:hover { background: var(--accent); color: var(--on-accent); }
   }
 
   .arrow {
-    @include transition(all .3s ease-out);
-    color: $default-color;
+    background: var(--card);
+    border: 2px solid var(--ink);
+    @include hard-shadow(3px, 3px);
+    color: var(--ink);
+    font-size: 1.1rem;
+    line-height: 1;
+    padding: .35rem .7rem;
     position: absolute;
+    text-decoration: none;
+    top: 1.7rem;
+    @include transition(transform .12s ease, box-shadow .12s ease, background-color .12s ease);
 
     &:hover,
     &:focus {
-      opacity: .6;
-      text-decoration: none;
+      background: var(--accent);
+      color: var(--on-accent);
+      transform: translate(2px, 2px);
+      @include hard-shadow(1px, 1px);
     }
   }
 
-  .left {
-    left: 0;
-  }
-
-  .right {
-    right: 0;
-  }
+  .left  { left: 1.5rem; }
+  .right { right: 1.5rem; }
 }

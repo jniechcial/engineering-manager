@@ -1,38 +1,31 @@
 ---
 layout: default
-title: Blog
+title: Writing
 robots: noindex
 ---
 
 <div class="catalogue">
   {% for post in paginator.posts %}
-    <a href="{{ post.url | prepend: site.baseurl }}" class="catalogue-item">
-      <div>
-        <time datetime="{{ post.date }}" class="catalogue-time">{{ post.date | date: "%B %d, %Y" }}</time>
-        <h1 class="catalogue-title">{{ post.title }}</h1>
-        <div class="catalogue-line"></div>
-
-        <p>
-          {{ post.content | truncatewords: 50 | strip_html }}
-        </p>
-
-      </div>
+    <a href="{{ post.url | relative_url }}" class="catalogue-item">
+      <time datetime="{{ post.date | date_to_xmlschema }}" class="catalogue-time">{{ post.date | date: "%B %-d, %Y" }}</time>
+      <span class="catalogue-title">{{ post.title }}</span>
+      <p>
+        {% if post.description and post.description != "" %}
+          {{ post.description }}
+        {% else %}
+          {{ post.content | strip_html | truncatewords: 40 }}
+        {% endif %}
+      </p>
     </a>
-    {% if forloop.index == 2 %}
-      {% include newsletter.html %}
-    {% endif %}
   {% endfor %}
-  {% if paginator.total_posts == 1 %}
-    {% include newsletter.html %}
-  {% endif %}
 </div>
 
 <div class="pagination">
   {% if paginator.previous_page %}
-    <a href="{{ paginator.previous_page_path | prepend: site.baseurl }}" class="left arrow">&#8592;</a>
+    <a href="{{ paginator.previous_page_path | relative_url }}" class="left arrow">&#8592;</a>
   {% endif %}
   {% if paginator.next_page %}
-    <a href="{{ paginator.next_page_path | prepend: site.baseurl }}" class="right arrow">&#8594;</a>
+    <a href="{{ paginator.next_page_path | relative_url }}" class="right arrow">&#8594;</a>
   {% endif %}
 
   <span>{{ paginator.page }}</span>

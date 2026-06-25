@@ -1,65 +1,145 @@
+// ── Theme colors (CSS custom properties) ────────────────────
+// Fixed light/beige theme — dark mode intentionally not respected.
+:root {
+  --paper:      #f4ead3;  // beige paper background
+  --ink:        #000000;  // pure black — text, borders
+  --ink-soft:   #2b2b2b;  // secondary text
+  --meta:       #6b6b6b;  // dates, captions
+  --rule:       #000000;  // hairlines are bold here
+  --rule-soft:  #e6dcc2;
+  --accent:     #ff90e8;  // Gumroad pink — headline highlights, buttons
+  --accent-deep:#ff5ddb;  // hover
+  --accent-2:   #ffc900;  // sunshine yellow
+  --accent-3:   #90a8ed;  // periwinkle
+  --accent-4:   #23a094;  // teal
+  --card:       #ffffff;
+  --shadow:     #000000;
+  --on-accent:  #000000;  // text on accent fills
+
+  // Soft, readable card tints used in rotation for extra colour.
+  --tint-1:     #ffd6f5;  // pink
+  --tint-2:     #ffe9a8;  // yellow
+  --tint-3:     #c9d4f7;  // periwinkle
+  --tint-4:     #b3e7df;  // mint
+}
+
 * {
   @include box-sizing;
-  line-height: 1.5;
+}
+
+html {
+  font-size: 18px;
+
+  @media (min-width: 600px) {
+    font-size: 19px;
+  }
 }
 
 html,
 body {
-  color: $default-color;
   margin: 0;
   padding: 0;
 }
 
-html {
-  font-family: $baskerville;
-  font-size: 18px;
-
-  @media (min-width: 600px) {
-    font-size: 20px;
-  }
-}
-
 body {
+  background-color: var(--paper);
+  color: var(--ink-soft);
+  font-family: $body-font;
+  font-size: 1.05rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
   -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  color: $default-shade;
-  font-family: $sans-font;
-  line-height: normal;
+h1, h2, h3, h4, h5, h6 {
+  color: var(--ink);
+  font-family: $display-font;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 2.2rem 0 1rem;
+}
+
+h1 { font-size: 2.4rem; }
+h2 { font-size: 1.8rem; }
+h3 { font-size: 1.35rem; }
+h4 { font-size: 1.1rem; }
+
+p {
+  margin: 0 0 1.3rem;
 }
 
 a {
-  color: $blue;
-  text-decoration: none;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--accent);
+  @include transition(background-color .12s ease, color .12s ease);
+
+  &:hover,
+  &:focus {
+    background-color: var(--accent);
+    color: var(--on-accent);
+    text-decoration: none;
+  }
+}
+
+strong { color: var(--ink); font-weight: 700; }
+
+hr {
+  border: 0;
+  border-top: $border-width solid var(--ink);
+  margin: 2.5rem 0;
 }
 
 blockquote {
-  border-left: .25rem solid $grey-2;
-  color: $grey-1;
-  margin: .8rem 0;
-  padding: .5rem 1rem;
+  background: var(--accent-2);
+  border: $border-width solid var(--ink);
+  @include hard-shadow(5px, 5px);
+  color: #000;
+  font-weight: 500;
+  margin: 1.8rem 0;
+  padding: 1.1rem 1.3rem;
 
-  p:last-child {
-    margin-bottom: 0;
-  }
-
-  @media (min-width: 600px) {
-    padding: 0 5rem 0 1.25rem;
-  }
+  p { margin-bottom: 0; }
+  p + p { margin-top: 1rem; }
 }
 
 img {
   display: block;
-  margin: 0 0 1rem;
+  border: $border-width solid var(--ink);
+  @include hard-shadow(5px, 5px);
+  margin: 1.8rem 0;
   max-width: 100%;
 }
 
-td {
-  vertical-align: top;
+ul, ol {
+  margin: 0 0 1.3rem;
+  padding-left: 1.4rem;
+
+  li { margin-bottom: .4rem; }
+}
+
+td { vertical-align: top; }
+
+::selection {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+// Shared reusable "chip" — an inline bordered label (eyebrows, meta tags).
+%chip {
+  background: var(--accent);
+  border: 2px solid var(--ink);
+  color: var(--on-accent);
+  display: inline-block;
+  font-family: $display-font;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  line-height: 1;
+  padding: .4rem .6rem;
+  text-transform: uppercase;
 }

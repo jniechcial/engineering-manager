@@ -1,33 +1,36 @@
 pre,
 code {
-  font-family: $monospaced-font;
+  font-family: $mono-font;
 }
 
 code {
-  background-color: $grey-3;
-  border-radius: 3px;
-  color: $code-color;
+  background-color: var(--accent-2);
+  border: 1.5px solid var(--ink);
+  color: #000;
   font-size: 85%;
-  padding: .25em .5em;
+  font-weight: 500;
+  padding: .1em .35em;
 }
 
 pre {
-  margin: 0 0 1rem;
+  margin: 0 0 1.3rem;
 }
 
 pre code {
   background-color: transparent;
+  border: 0;
   color: inherit;
   font-size: 100%;
   padding: 0;
 }
 
 .highlight {
-  background-color: $grey-3;
-  border-radius: 3px;
-  line-height: 1.4;
-  margin: 0 0 1rem;
-  padding: 1rem;
+  background-color: var(--card);
+  border: $border-width solid var(--ink);
+  @include hard-shadow(5px, 5px);
+  line-height: 1.45;
+  margin: 0 0 1.8rem;
+  padding: 1rem 1.2rem;
 
   pre {
     margin-bottom: 0;
@@ -35,10 +38,9 @@ pre code {
   }
 
   .lineno {
-    color: $default-tint;
-    display: inline-block; // Ensures the null space also isn't selectable
+    color: var(--meta);
+    display: inline-block;
     padding: 0 .75rem 0 .25rem;
-    // Make sure numbers aren't selectable
     -webkit-user-select: none;
        -moz-user-select: none;
             user-select: none;

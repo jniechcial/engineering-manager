@@ -1,28 +1,41 @@
-$default-color: #555;
-$default-shade: #353535;
-$default-tint: #aaa;
-$grey-1: #979797;
-$grey-2: #e5e5e5;
-$grey-3: #f9f9f9;
-$white: #fff;
-$blue: #4a9ae1;
-$shadow-color: rgba(0, 0, 0, .2);
+// ── Typography ──────────────────────────────────────────────
+$display-font: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif;
+$body-font:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+$mono-font:    'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-$baskerville: 'Libre Baskerville', 'Times New Roman', Times, serif;
-$palatino: Palatino, 'Palatino LT STD', 'Palatino Linotype', 'Book Antiqua', 'Georgia', serif;
-$sans-font: 'Helvetica Neue', 'Segoe UI', Helvetica, Arial, sans-serif;
+// Back-compat aliases (older partials reference these names)
+$serif-font:   $body-font;
+$sans-font:    $body-font;
 
-$monospaced-font: Menlo, Monaco, monospace;
-$code-color: #bf616a;
+// ── Measure / spacing ───────────────────────────────────────
+$measure: 46rem;  // single container width — home, blog, posts all align
+$wide:    46rem;
+
+// ── Neo-brutalist building blocks ───────────────────────────
+$border-width: 3px;
 
 @mixin box-sizing($type: border-box) {
-  -webkit-box-sizing: $type;
-     -moz-box-sizing: $type;
-          box-sizing: $type;
+  box-sizing: $type;
 }
 
 @mixin transition($args...) {
-  -webkit-transition: $args;
-     -moz-transition: $args;
-          transition: $args;
+  transition: $args;
+}
+
+// Hard, offset, blur-free shadow — the brutalist signature.
+@mixin hard-shadow($x: 4px, $y: 4px) {
+  box-shadow: #{$x} #{$y} 0 var(--shadow);
+}
+
+// A bordered block that "lifts" on hover by pressing into its shadow.
+@mixin brutal-card($x: 5px, $y: 5px) {
+  background: var(--card);
+  border: $border-width solid var(--ink);
+  @include hard-shadow($x, $y);
+  @include transition(transform .12s ease, box-shadow .12s ease);
+
+  &:hover {
+    transform: translate(2px, 2px);
+    box-shadow: #{$x - 2px} #{$y - 2px} 0 var(--shadow);
+  }
 }

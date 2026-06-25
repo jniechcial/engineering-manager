@@ -1,9 +1,16 @@
 source 'https://rubygems.org'
-gem 'github-pages', group: :jekyll_plugins
-gem 'faraday', '0.17.3'
-gem 'jekyll-feed'
-gem "jekyll", "~> 3.9.4"
-gem "base64", "~> 0.3.0"
-gem "bigdecimal", "~> 4.0"
-gem "csv", "~> 3.3"
+
+gem "jekyll", "~> 4.3"
+
+group :jekyll_plugins do
+  gem "jekyll-feed"
+  gem "jekyll-seo-tag"
+  gem "jekyll-sitemap"
+  gem "jekyll-paginate"
+end
+
+# Dart Sass (ships with Jekyll 4); keeps SCSS compilation modern.
+gem "jekyll-sass-converter", "~> 3.0"
+
+# Needed to run `jekyll serve` locally on Ruby 3.x.
 gem "webrick", "~> 1.9"

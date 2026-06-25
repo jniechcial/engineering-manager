@@ -9,9 +9,6 @@ url:            "https://engineering-manager.com"
 email:          jakub.niechcial@gmail.com
 future:         false
 
-disqus:
-  shortname: niechcial
-
 include:
   - "_imgs"
 
@@ -22,11 +19,26 @@ twitter:
 social:
   name: Kuba Niechcial
   links:
-    - https://twitter.com/kubaniechcial
-    - https://www.facebook.com/jakub.niechcial
     - https://www.linkedin.com/in/jakubniechcial/
     - https://github.com/jniechcial
+    - https://huggingface.co/jniechcial
 google_site_verification: o3FgBlvraKdY7aTHIZpg2tDOtK2nLvCj5VxfD-uRJ0g
+
+# Profile links used by the home page and post share/footer.
+profile:
+  x:           https://x.com/kubaniechcial
+  linkedin:    https://www.linkedin.com/in/jakubniechcial/
+  github:      https://github.com/jniechcial
+  huggingface: https://huggingface.co/jniechcial
+
+# Google Analytics 4. Set your Measurement ID (G-XXXXXXXXXX) to enable.
+ga4_measurement_id: ""
+
+# Posts featured on the home page. Use post URL paths (without leading slash).
+featured:
+  - "2024-01-30/lessons-from-intercom"
+  - "2023-07-27/turning-around-an-org"
+  - "2026-01-26/new-talent-bar-for-software-engineers"
 
 # Assets
 sass:

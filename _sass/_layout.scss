@@ -1,91 +1,97 @@
-.container {
+main {
   margin: 0 auto;
-  max-width: 800px;
-  width: 80%;
+  width: 100%;
 }
 
-main,
-footer,
-.nav-container {
-  margin: 0 auto;
-  max-width: 800px;
-  width: 80%;
-}
-
+// ── Top navigation ──────────────────────────────────────────
 .nav {
-  box-shadow: 0 2px 2px -2px $shadow-color;
-  overflow: auto;
+  background: var(--paper);
+  border-bottom: $border-width solid var(--ink);
+}
 
-  &-container {
-    margin: 1rem auto;
-    position: relative;
-    text-align: center;
+.nav-container {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  margin: 0 auto;
+  max-width: $wide;
+  padding: 1rem 1.5rem;
+  width: 100%;
+}
+
+.nav-title {
+  background: var(--accent-3);
+  border: 2px solid var(--ink);
+  @include hard-shadow(3px, 3px);
+  color: var(--on-accent);
+  display: inline-block;
+  font-family: $display-font;
+  font-size: .82rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  margin: 0;
+  padding: .45rem .7rem;
+  text-decoration: none;
+  text-transform: uppercase;
+  @include transition(transform .12s ease, box-shadow .12s ease, background-color .12s ease);
+
+  &:hover {
+    background: var(--accent);
+    color: var(--on-accent);
+    transform: translate(2px, 2px);
+    @include hard-shadow(1px, 1px);
   }
+}
 
-  &-title {
-    @include transition(all .2s ease-out);
-    color: $default-color;
-    display: inline-block;
-    margin: 0;
-    padding-right: .2rem;
-
-    &:hover,
-    &:focus {
-      opacity: .6;
-    }
-  }
-
-  ul {
-    list-style-type: none;
-    margin: 1rem 0 0;
-    padding: 0;
-    text-align: center;
-  }
-
-  li {
-    @include transition(all .2s ease-out);
-    color: $default-color;
-    display: inline-block;
-    opacity: .6;
-    padding: 0 2rem 0 0;
-
-    &:last-child {
-      padding-right: 0;
-    }
-
-    &:hover,
-    &:focus {
-      opacity: 1;
-    }
-  }
+.nav-links {
+  align-items: center;
+  display: flex;
+  gap: .6rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 
   a {
-    color: $default-color;
-    font-family: $sans-font;
+    border: 2px solid var(--ink);
+    color: var(--ink);
+    display: inline-block;
+    font-family: $display-font;
+    font-size: .78rem;
+    font-weight: 600;
+    letter-spacing: .04em;
+    padding: .35rem .7rem;
+    text-decoration: none;
+    text-transform: uppercase;
+    @include transition(background-color .12s ease, color .12s ease);
+
+    &:hover { background: var(--accent); color: var(--on-accent); }
   }
 }
 
-@media (min-width: 600px) {
-  .nav {
-    &-container {
-      text-align: left;
-    }
-
-    ul {
-      bottom: 0;
-      position: absolute;
-      right: 0;
-    }
-  }
+// ── Footer ──────────────────────────────────────────────────
+.footer {
+  background: var(--ink);
+  border-top: $border-width solid var(--ink);
+  margin-top: 5rem;
 }
 
-footer {
-  font-family: $palatino;
-  padding: 2rem 0;
+.footer-container {
+  color: var(--paper);
+  font-family: $display-font;
+  font-size: .8rem;
+  font-weight: 500;
+  letter-spacing: .04em;
+  margin: 0 auto;
+  max-width: $wide;
+  padding: 2.2rem 1.5rem;
   text-align: center;
+  text-transform: uppercase;
+  width: 100%;
 
-  span {
-    color: $default-color;
-    font-size: .8rem;
+  a {
+    color: var(--accent);
+    text-decoration: none;
+    &:hover { background: var(--accent); color: var(--on-accent); }
   }
 }
