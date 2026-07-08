@@ -32,7 +32,7 @@ profile:
   huggingface: https://huggingface.co/jniechcial
 
 # Google Analytics 4. Set your Measurement ID (G-XXXXXXXXXX) to enable.
-ga4_measurement_id: ""
+ga4_measurement_id: "G-KWXMKH83D2"
 
 # Posts featured on the home page. Use post URL paths (without leading slash).
 featured:
