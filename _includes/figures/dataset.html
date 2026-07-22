@@ -17,8 +17,8 @@ actually sees on the right, switchable between three real chat templates.
             <div class="sample">
               <span class="sample__n">Row 1</span>
               <div class="msg msg--system"><span class="msg__role">system</span><span class="msg__content">You are terse.</span></div>
-              <div class="msg msg--user"><span class="msg__role">user</span><span class="msg__content">Reverse: a b</span></div>
-              <div class="msg msg--assistant"><span class="msg__role">assistant</span><span class="msg__content">b a</span></div>
+              <div class="msg msg--user"><span class="msg__role">user</span><span class="msg__content">Reverse: tic tac</span></div>
+              <div class="msg msg--assistant"><span class="msg__role">assistant</span><span class="msg__content">tac tic</span></div>
             </div>
             <div class="sample">
               <span class="sample__n">Row 2</span>
@@ -80,8 +80,8 @@ actually sees on the right, switchable between three real chat templates.
     chatml: {
       body:
         M('&lt;|im_start|&gt;') + 'system\n' + C('You are terse.') + M('&lt;|im_end|&gt;') + '\n' +
-        M('&lt;|im_start|&gt;') + 'user\n' + C('Reverse: a b') + M('&lt;|im_end|&gt;') + '\n' +
-        M('&lt;|im_start|&gt;') + 'assistant\n' + C('b a') + M('&lt;|im_end|&gt;'),
+        M('&lt;|im_start|&gt;') + 'user\n' + C('Reverse: tic tac') + M('&lt;|im_end|&gt;') + '\n' +
+        M('&lt;|im_start|&gt;') + 'assistant\n' + C('tac tic') + M('&lt;|im_end|&gt;'),
       note: 'Used by Qwen and a lot of the open ecosystem. Roles are plain words on their own line, wrapped in two special tokens.'
     },
     llama: {
@@ -89,16 +89,16 @@ actually sees on the right, switchable between three real chat templates.
         M('&lt;|begin_of_text|&gt;') + M('&lt;|start_header_id|&gt;') + 'system' + M('&lt;|end_header_id|&gt;') + '\n\n' +
         C('You are terse.') + M('&lt;|eot_id|&gt;') +
         M('&lt;|start_header_id|&gt;') + 'user' + M('&lt;|end_header_id|&gt;') + '\n\n' +
-        C('Reverse: a b') + M('&lt;|eot_id|&gt;') +
+        C('Reverse: tic tac') + M('&lt;|eot_id|&gt;') +
         M('&lt;|start_header_id|&gt;') + 'assistant' + M('&lt;|end_header_id|&gt;') + '\n\n' +
-        C('b a') + M('&lt;|eot_id|&gt;'),
+        C('tac tic') + M('&lt;|eot_id|&gt;'),
       note: 'Different token names, a mandatory beginning-of-text token, and the blank line after the header is load-bearing.'
     },
     gemma: {
       body:
         M('&lt;bos&gt;') + M('&lt;start_of_turn&gt;') + 'user\n' +
-        C('You are terse.') + '\n\n' + C('Reverse: a b') + M('&lt;end_of_turn&gt;') + '\n' +
-        M('&lt;start_of_turn&gt;') + 'model\n' + C('b a') + M('&lt;end_of_turn&gt;'),
+        C('You are terse.') + '\n\n' + C('Reverse: tic tac') + M('&lt;end_of_turn&gt;') + '\n' +
+        M('&lt;start_of_turn&gt;') + 'model\n' + C('tac tic') + M('&lt;end_of_turn&gt;'),
       note: 'Gemma has no system role at all — the template folds your system message into the first user turn. It also calls the assistant "model". Same data, structurally different sequence.'
     }
   };

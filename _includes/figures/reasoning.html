@@ -11,14 +11,14 @@ Figure: a reasoning training sample, and the SFT/RL division of labour.
     <div>
       <div class="tok-row">
         <span class="tok tok--prompt">&lt;user&gt;</span>
-        <span class="tok tok--prompt">a</span>
-        <span class="tok tok--prompt">b</span>
+        <span class="tok tok--prompt">tic</span>
+        <span class="tok tok--prompt">tac</span>
         <span class="tok tok--prompt">&lt;asst&gt;</span>
         <span class="tok tok--think">&lt;think&gt;</span>
-        <span class="tok tok--think">user said a b so reverse it</span>
+        <span class="tok tok--think">user said tic tac so reverse it</span>
         <span class="tok tok--think">&lt;/think&gt;</span>
-        <span class="tok tok--completion">b</span>
-        <span class="tok tok--completion">a</span>
+        <span class="tok tok--completion">tac</span>
+        <span class="tok tok--completion">tic</span>
         <span class="tok tok--completion">&lt;eos&gt;</span>
       </div>
     </div>
@@ -44,7 +44,8 @@ Figure: a reasoning training sample, and the SFT/RL division of labour.
       </div>
     </div>
   </div>
-  <figcaption class="fig__cap">DeepSeek showed with R1-Zero that you can get reasoning out of pure RL on a base
-    model, with no SFT at all. It came out unreadable — so the actual R1 used a small SFT step first, purely to
-    fix the format. A neat illustration of the same division of labour.</figcaption>
+  <figcaption class="fig__cap"><a href="https://arxiv.org/abs/2501.12948v1">DeepSeek showed with R1-Zero</a>
+    that you can get reasoning out of pure RL on a base model, with no SFT at all. It came out unreadable — so
+    the actual R1 used a small SFT step first, purely to fix the format. A neat illustration of the same
+    division of labour.</figcaption>
 </figure>

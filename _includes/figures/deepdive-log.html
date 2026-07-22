@@ -20,9 +20,9 @@ are summed rather than multiplied.
     <p>Start from first principles. The probability of the model producing our whole three-token answer is the
       product of the probability of each token given everything before it:</p>
 
-    <div class="eq">P(output | input) = P(<b>b</b> | input)
-                 × P(<b>a</b> | input + "b")
-                 × P(<b>&lt;eos&gt;</b> | input + "b a")</div>
+    <div class="eq">P(output | input) = P(<b>tac</b> | input)
+                 × P(<b>tic</b> | input + "tac")
+                 × P(<b>&lt;eos&gt;</b> | input + "tac tic")</div>
 
     <p>We want to maximise that. So far so good. The problem is that every one of those factors is a
       probability, sitting somewhere between 0 and 1, and multiplying hundreds of numbers below 1 drives the
@@ -48,7 +48,7 @@ are summed rather than multiplied.
       maximise:</p>
 
     <div class="eq">loss = &minus;log P(output | input)
-     = &minus;log P(b) + &minus;log P(a) + &minus;log P(&lt;eos&gt;)
+     = &minus;log P(tac) + &minus;log P(tic) + &minus;log P(&lt;eos&gt;)
      = 2.062 + 0.314 + 0.653
      = <b>3.029</b></div>
 

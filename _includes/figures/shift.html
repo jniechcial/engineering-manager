@@ -49,7 +49,7 @@ for that position is shown below.
     </div>
   </div>
   <figcaption class="fig__cap">The distribution that has to put its mass on our first answer token
-    <strong>b</strong> does not live at <strong>b</strong> — it lives one slot to the left, at
+    <strong>tac</strong> does not live at <strong>tac</strong> — it lives one slot to the left, at
     <strong>&lt;asst&gt;</strong>. Position 7 produces a distribution too, but there is no token 8 to score it
     against, so it is thrown away. Positions 1–3 are computed and then discarded by the mask.</figcaption>
 </figure>
@@ -59,8 +59,8 @@ for that position is shown below.
   var root = document.getElementById('fig-shift');
   if (!root) return;
 
-  var VOCAB = ['<user>', '<asst>', 'a', 'b', '<eos>'];
-  var SEQ = ['<user>', 'a', 'b', '<asst>', 'b', 'a', '<eos>'];
+  var VOCAB = ['<user>', '<asst>', 'tic', 'tac', '<eos>'];
+  var SEQ = ['<user>', 'tic', 'tac', '<asst>', 'tac', 'tic', '<eos>'];
   var PROMPT_UNTIL = 4; // positions 1..4 are the prompt
 
   var POS = [
@@ -71,9 +71,9 @@ for that position is shown below.
     { logits: [-1.0,  2.6,  0.4,  0.6,  0.2], state: 'masked',
       note: 'The model is confident the turn is about to switch. Still masked — the prompt ends here.' },
     { logits: [-0.5, -0.2,  2.3,  0.6,  0.1], state: 'scored',
-      note: 'The interesting one. The model wants to echo "a" — it is copying, not reversing. Low probability on the target means high loss, which means this position drives most of the gradient.' },
+      note: 'The interesting one. The model wants to echo "tic" — it is copying, not reversing. Low probability on the target means high loss, which means this position drives most of the gradient.' },
     { logits: [-0.6, -0.3,  2.6,  0.2,  0.9], state: 'scored',
-      note: 'Confident and correct. Note "a" is now the right answer at 0.730, where one position earlier it was the wrong answer at 0.696 — the distribution is a function of the prefix, not of the token itself.' },
+      note: 'Confident and correct. Note "tic" is now the right answer at 0.730, where one position earlier it was the wrong answer at 0.696 — the distribution is a function of the prefix, not of the token itself.' },
     { logits: [-0.4, -0.1,  0.8,  1.1,  2.0], state: 'scored',
       note: 'Right, but shaky — nearly half the mass still wants to keep talking. Knowing when to stop is a real thing SFT has to teach, and it is usually the last skill to firm up.' },
     { logits: null, state: 'dropped',
