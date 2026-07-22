@@ -1,0 +1,52 @@
+{%- comment -%}
+Figure: the per-token losses adding up, and the normalization fork.
+{%- endcomment -%}
+<figure class="fig">
+  <span class="fig__label">Figure 7</span>
+  <div class="fig__frame">
+    <p class="fig__title">Adding it up</p>
+
+    <div class="ledger">
+      <div class="ledger__line ledger__line--off"><span class="lbl">t = 1, 2, 3 &nbsp;masked</span><span class="dots"></span><span class="val">—</span></div>
+      <div class="ledger__line"><span class="lbl">t = 4 &nbsp;&minus;log p(b)</span><span class="dots"></span><span class="val">2.062</span></div>
+      <div class="ledger__line"><span class="lbl">t = 5 &nbsp;&minus;log p(a)</span><span class="dots"></span><span class="val">0.314</span></div>
+      <div class="ledger__line"><span class="lbl">t = 6 &nbsp;&minus;log p(&lt;eos&gt;)</span><span class="dots"></span><span class="val">0.653</span></div>
+      <div class="ledger__line ledger__line--off"><span class="lbl">t = 7 &nbsp;dropped</span><span class="dots"></span><span class="val">—</span></div>
+      <div class="ledger__line ledger__line--sum"><span class="lbl">Sum over the sample</span><span class="dots"></span><span class="val">3.029</span></div>
+    </div>
+
+    <p style="margin:1.2rem 0 .9rem;font-size:.9rem;line-height:1.55">
+      One of the three positions that count carries <strong>68%</strong> of the loss. That is the normal state of affairs:
+      most tokens in a fine-tuning corpus are already easy for the base model, and the signal comes from the
+      few places where the right answer is not what the model would have said.
+    </p>
+
+    <hr class="fig__hr">
+
+    <p class="fig__eyebrow">Now divide — but by what?</p>
+    <p class="fig__note" style="margin-bottom:1rem">Put our 3-token sample in a batch with a longer one — say a
+      6-token answer with a summed loss of 3.870 — and the two conventions disagree.</p>
+
+    <div class="duo duo--tight">
+      <div class="pane">
+        <div class="pane__head pane__head--warm">Per token</div>
+        <div class="pane__body">
+          <p class="pane__stat">0.767</p>
+          <p class="pane__calc">(3.029 + 3.870) ÷ (3 + 6)</p>
+          <p>The common default. The 6-token sample contributes twice the gradient of the 3-token one — length
+            quietly becomes weight.</p>
+        </div>
+      </div>
+      <div class="pane">
+        <div class="pane__head pane__head--good">Per sample</div>
+        <div class="pane__body">
+          <p class="pane__stat">0.827</p>
+          <p class="pane__calc">(3.029 ÷ 3 + 3.870 ÷ 6) ÷ 2</p>
+          <p>Every example counts once, however long it is. Different number, different gradient, same data.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <figcaption class="fig__cap">Neither is wrong. But if your dataset mixes one-line answers with long ones, this
+    choice silently decides which of them your model is really learning from.</figcaption>
+</figure>

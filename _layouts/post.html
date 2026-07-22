@@ -44,10 +44,10 @@ layout: default
 </article>
 
 <div class="pagination">
-  {% if page.next.url %}
+  {% if page.next.url and page.next.unlisted != true %}
     <a href="{{ page.next.url | relative_url }}" class="left arrow">&#8592;</a>
   {% endif %}
-  {% if page.previous.url %}
+  {% if page.previous.url and page.previous.unlisted != true %}
     <a href="{{ page.previous.url | relative_url }}" class="right arrow">&#8594;</a>
   {% endif %}
 

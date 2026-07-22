@@ -1,0 +1,172 @@
+{%- comment -%}
+Figure: what a full fine-tune has to hold in GPU memory vs LoRA, switchable
+between a small open-weights model and a frontier one. ~16 bytes per parameter
+for a mixed-precision Adam full fine-tune.
+{%- endcomment -%}
+<figure class="fig fig--wide" id="fig-memory">
+  <span class="fig__label">Figure 9 · Interactive</span>
+  <div class="fig__frame">
+    <p class="fig__title">What has to fit in GPU memory</p>
+    <p class="fig__note">Mixed-precision Adam, roughly 16 bytes per parameter. Neither bar includes
+      activations — those pile on top, and scale with batch size and sequence length. Each square below is
+      one 80&nbsp;GB datacenter GPU.</p>
+
+    <div class="tabs">
+      <button class="btn" type="button" data-model="nano" aria-pressed="true">Nemotron 3 Nano</button>
+      <button class="btn" type="button" data-model="glm" aria-pressed="false">GLM-5.2</button>
+    </div>
+
+    <div class="facts" data-role="facts"></div>
+
+    <div class="stack">
+      <div class="stack__row">
+        <div class="stack__head">
+          <span>Full fine-tune</span>
+          <span class="stack__total" data-role="fulltotal"></span>
+        </div>
+        <div class="stack__bar" data-role="fullbar"></div>
+        <div class="key">
+          <span><i style="background:var(--tint-3)"></i> weights, bf16</span>
+          <span><i style="background:var(--accent)"></i> gradients</span>
+          <span><i style="background:var(--accent-2)"></i> fp32 master copy + Adam's two moments</span>
+        </div>
+        <div class="gpus" data-role="fullgpus"></div>
+      </div>
+
+      <div class="stack__row">
+        <div class="stack__head">
+          <span>LoRA</span>
+          <span class="stack__total" data-role="loratotal"></span>
+        </div>
+        <div class="stack__bar" data-role="lorabar"></div>
+        <div class="key">
+          <span><i style="background:var(--tint-3)"></i> the same weights, frozen</span>
+          <span><i style="background:var(--accent-4)"></i> adapters + their gradients and optimizer state</span>
+        </div>
+        <div class="gpus" data-role="loragpus"></div>
+      </div>
+    </div>
+
+    <div class="strip" data-role="verdict"></div>
+
+    <div class="strip" style="background:var(--tint-3)">
+      <span class="strip__icon">🧩</span>
+      <p><strong>Both of these are Mixture-of-Experts models, and it does not help here.</strong> GLM-5.2
+        only activates about 40B of its 744B parameters for any given token, which is an enormous saving at
+        inference. During a full fine-tune you are training all the experts, so every one of those 744B
+        parameters still needs a gradient and an optimizer slot. Sparsity buys you compute, not memory.</p>
+    </div>
+
+    <div class="strip">
+      <span class="strip__icon">🔁</span>
+      <p>Because you are training so few parameters, LoRA wants a much <strong>higher</strong> learning rate
+        than a full fine-tune — around <span class="tok" style="font-size:.72rem">1e-4</span> rather than
+        <span class="tok" style="font-size:.72rem">1e-5</span>. Carrying over the full fine-tune's learning
+        rate is a classic way to watch nothing happen for three epochs.</p>
+    </div>
+  </div>
+  <figcaption class="fig__cap">LoRA is not simply a cheaper full fine-tune. It tends to match full
+    fine-tuning on style, format and behaviour, and to fall behind when you are pushing genuinely new
+    knowledge in — though it also forgets less of the original model, which is the flip side of touching
+    fewer weights.</figcaption>
+</figure>
+
+<script>
+(function () {
+  var root = document.getElementById('fig-memory');
+  if (!root) return;
+
+  var MODELS = {
+    nano: {
+      facts: ['31.6B total params', '3.6B active / token', 'hybrid Mamba-2 + MoE', 'NVIDIA · Dec 2025'],
+      full: {
+        total: '506 GB',
+        segs: [
+          { w: 12.5, cls: 'weights', label: '63 GB' },
+          { w: 12.5, cls: 'grads',   label: '63 GB' },
+          { w: 25,   cls: 'optim',   label: '126 GB' },
+          { w: 50,   cls: 'optim',   label: '253 GB' }
+        ],
+        gpus: 7
+      },
+      lora: {
+        total: '64 GB',
+        segs: [
+          { w: 12.5, cls: 'weights', label: '63 GB' },
+          { w: 0.6,  cls: 'tiny',    label: '' },
+          { w: 86.9, cls: 'free',    label: 'frozen — no gradients, no optimizer state' }
+        ],
+        gpus: 1
+      },
+      verdict: 'LoRA turns this one from a <strong>small cluster into a single GPU</strong>. That is the ' +
+               'case LoRA is famous for, and for style, format and behaviour work it is genuinely the ' +
+               'right default.'
+    },
+    glm: {
+      facts: ['744B total params', '40B active / token', 'Mixture-of-Experts', 'Zhipu AI · June 2026'],
+      full: {
+        total: '11,904 GB · ~11.9 TB',
+        segs: [
+          { w: 12.5, cls: 'weights', label: '1,488 GB' },
+          { w: 12.5, cls: 'grads',   label: '1,488 GB' },
+          { w: 25,   cls: 'optim',   label: '2,976 GB' },
+          { w: 50,   cls: 'optim',   label: '5,952 GB' }
+        ],
+        gpus: 149
+      },
+      lora: {
+        total: '1,494 GB · ~1.5 TB',
+        segs: [
+          { w: 12.5, cls: 'weights', label: '1,488 GB' },
+          { w: 0.6,  cls: 'tiny',    label: '' },
+          { w: 86.9, cls: 'free',    label: 'frozen — no gradients, no optimizer state' }
+        ],
+        gpus: 19
+      },
+      verdict: 'At this scale LoRA does not remove the wall, it just <strong>moves it</strong> — 149 GPUs ' +
+               'down to 19. A real 8× saving, and still a cluster, because you have to hold the frozen ' +
+               'weights somewhere no matter what you are training.'
+    }
+  };
+
+  var factsEl = root.querySelector('[data-role="facts"]');
+  var verdictEl = root.querySelector('[data-role="verdict"]');
+  var btns = root.querySelectorAll('[data-model]');
+
+  function bar(el, segs) {
+    el.innerHTML = segs.map(function (s) {
+      return '<span class="stack__seg stack__seg--' + s.cls + '" style="--w:' + s.w + '%">' +
+             s.label + '</span>';
+    }).join('');
+  }
+
+  function gpus(el, n, cls) {
+    el.innerHTML = '<span class="gpus__n">' + n + ' × 80GB GPU' + (n === 1 ? '' : 's') + '</span>' +
+      new Array(n + 1).join('<span class="gpu ' + cls + '"></span>');
+  }
+
+  function show(key) {
+    var m = MODELS[key];
+    factsEl.innerHTML = m.facts.map(function (f) { return '<span>' + f + '</span>'; }).join('');
+
+    root.querySelector('[data-role="fulltotal"]').textContent = m.full.total;
+    root.querySelector('[data-role="loratotal"]').textContent = m.lora.total;
+    bar(root.querySelector('[data-role="fullbar"]'), m.full.segs);
+    bar(root.querySelector('[data-role="lorabar"]'), m.lora.segs);
+    gpus(root.querySelector('[data-role="fullgpus"]'), m.full.gpus, '');
+    gpus(root.querySelector('[data-role="loragpus"]'), m.lora.gpus, 'gpu--lora');
+
+    verdictEl.innerHTML = '<span class="strip__icon">📉</span><p>' + m.verdict + '</p>';
+
+    btns.forEach(function (b) {
+      b.setAttribute('aria-pressed', b.getAttribute('data-model') === key ? 'true' : 'false');
+    });
+  }
+
+  btns.forEach(function (b) {
+    b.addEventListener('click', function () { show(b.getAttribute('data-model')); });
+  });
+
+  show('nano');
+})();
+</script>

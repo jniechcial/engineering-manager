@@ -1,0 +1,50 @@
+{%- comment -%}
+Figure: a reasoning training sample, and the SFT/RL division of labour.
+{%- endcomment -%}
+<figure class="fig">
+  <span class="fig__label">Figure 8</span>
+  <div class="fig__frame">
+    <p class="fig__title">Teaching a model to think first</p>
+    <p class="fig__note">Structurally, nothing changes. It is the same sequence, the same mask, the same
+      per-token loss. The answer just got longer, and part of it is now the model talking to itself.</p>
+
+    <div>
+      <div class="tok-row">
+        <span class="tok tok--prompt">&lt;user&gt;</span>
+        <span class="tok tok--prompt">a</span>
+        <span class="tok tok--prompt">b</span>
+        <span class="tok tok--prompt">&lt;asst&gt;</span>
+        <span class="tok tok--think">&lt;think&gt;</span>
+        <span class="tok tok--think">user said a b so reverse it</span>
+        <span class="tok tok--think">&lt;/think&gt;</span>
+        <span class="tok tok--completion">b</span>
+        <span class="tok tok--completion">a</span>
+        <span class="tok tok--completion">&lt;eos&gt;</span>
+      </div>
+    </div>
+
+    <div class="key">
+      <span class="key--prompt"><i></i> prompt</span>
+      <span><i style="background:var(--tint-4)"></i> thinking — scored like everything else</span>
+      <span class="key--completion"><i></i> answer</span>
+    </div>
+
+    <hr class="fig__hr">
+
+    <div class="duo duo--tight">
+      <div class="pane">
+        <div class="pane__head pane__head--warm">SFT teaches</div>
+        <div class="pane__body"><p>The <em>shape</em> of thinking. Where the thinking goes, what wraps it, that
+          it comes before the answer, and roughly how long it runs.</p></div>
+      </div>
+      <div class="pane">
+        <div class="pane__head pane__head--good">RL teaches</div>
+        <div class="pane__body"><p>Whether what is <em>inside</em> it is any good. SFT has no way to tell a
+          correct chain of thought from a confident wrong one — they are equally likely training samples.</p></div>
+      </div>
+    </div>
+  </div>
+  <figcaption class="fig__cap">DeepSeek showed with R1-Zero that you can get reasoning out of pure RL on a base
+    model, with no SFT at all. It came out unreadable — so the actual R1 used a small SFT step first, purely to
+    fix the format. A neat illustration of the same division of labour.</figcaption>
+</figure>

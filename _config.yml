@@ -7,7 +7,9 @@ paginate_path: "/blog/:num/"
 baseurl:        ""
 url:            "https://engineering-manager.com"
 email:          jakub.niechcial@gmail.com
-future:         false
+# Build future-dated posts. They are still kept off the blog index by an
+# `unlisted: true` flag in their own front matter — see blog/index.html.
+future:         true
 
 include:
   - "_imgs"

@@ -1,0 +1,124 @@
+{%- comment -%}
+Figure: structured messages on the left, the flattened string the tokenizer
+actually sees on the right, switchable between three real chat templates.
+{%- endcomment -%}
+<figure class="fig fig--wide" id="fig-dataset">
+  <span class="fig__label">Figure 4 · Interactive</span>
+  <div class="fig__frame">
+    <p class="fig__title">A dataset row, and what the tokenizer turns it into</p>
+    <p class="fig__note">Switch the template to see the same three messages flattened three different ways.
+      Pink is structure the template adds; teal is your actual content.</p>
+
+    <div class="duo duo--top">
+      <div class="pane">
+        <div class="pane__head pane__head--flat">Four rows of the dataset</div>
+        <div class="pane__body">
+          <div class="samples">
+            <div class="sample">
+              <span class="sample__n">Row 1</span>
+              <div class="msg msg--system"><span class="msg__role">system</span><span class="msg__content">You are terse.</span></div>
+              <div class="msg msg--user"><span class="msg__role">user</span><span class="msg__content">Reverse: a b</span></div>
+              <div class="msg msg--assistant"><span class="msg__role">assistant</span><span class="msg__content">b a</span></div>
+            </div>
+            <div class="sample">
+              <span class="sample__n">Row 2</span>
+              <div class="msg msg--user"><span class="msg__role">user</span><span class="msg__content">Reverse: cat dog</span></div>
+              <div class="msg msg--assistant"><span class="msg__role">assistant</span><span class="msg__content">dog cat</span></div>
+            </div>
+            <div class="sample">
+              <span class="sample__n">Row 3 · multi-turn</span>
+              <div class="msg msg--user"><span class="msg__role">user</span><span class="msg__content">Reverse: x y z</span></div>
+              <div class="msg msg--assistant"><span class="msg__role">assistant</span><span class="msg__content">z y x</span></div>
+              <div class="msg msg--user"><span class="msg__role">user</span><span class="msg__content">Again, but shout.</span></div>
+              <div class="msg msg--assistant"><span class="msg__role">assistant</span><span class="msg__content">Z Y X</span></div>
+            </div>
+            <div class="sample">
+              <span class="sample__n">Row 4</span>
+              <div class="msg msg--user"><span class="msg__role">user</span><span class="msg__content">Reverse: 1 2 3</span></div>
+              <div class="msg msg--assistant"><span class="msg__role">assistant</span><span class="msg__content">3 2 1</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="pane__foot">This is how it is stored, and how you will find it on the Hub — a list of
+          <span class="tok" style="font-size:.72rem">role</span> /
+          <span class="tok" style="font-size:.72rem">content</span> objects. No special tokens anywhere.</div>
+      </div>
+
+      <div class="pane">
+        <div class="pane__head pane__head--good">Row 1, after <span style="text-transform:none">apply_chat_template()</span></div>
+        <div class="pane__body">
+          <div class="tabs">
+            <button class="btn" type="button" data-tmpl="chatml" aria-pressed="true">ChatML</button>
+            <button class="btn" type="button" data-tmpl="llama" aria-pressed="false">Llama 3</button>
+            <button class="btn" type="button" data-tmpl="gemma" aria-pressed="false">Gemma</button>
+          </div>
+          <div class="tmpl" data-role="out"></div>
+          <p style="margin:.7rem 0 0;font-size:.84rem;line-height:1.5;color:var(--meta)" data-role="tmplnote"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="strip">
+      <span class="strip__icon">⚠️</span>
+      <p><strong>Fine-tune with one of these and serve with another</strong> and you get a model that is quietly
+        worse for reasons that never appear in your loss curve — the mismatch only exists at inference. This is
+        the single most common real-world SFT bug. Call the tokenizer's own
+        <span class="tok" style="font-size:.72rem">apply_chat_template</span> and never hand-roll the string.</p>
+    </div>
+  </div>
+</figure>
+
+<script>
+(function () {
+  var root = document.getElementById('fig-dataset');
+  if (!root) return;
+
+  var M = function (s) { return '<mark>' + s + '</mark>'; };
+  var C = function (s) { return '<em>' + s + '</em>'; };
+
+  var TEMPLATES = {
+    chatml: {
+      body:
+        M('&lt;|im_start|&gt;') + 'system\n' + C('You are terse.') + M('&lt;|im_end|&gt;') + '\n' +
+        M('&lt;|im_start|&gt;') + 'user\n' + C('Reverse: a b') + M('&lt;|im_end|&gt;') + '\n' +
+        M('&lt;|im_start|&gt;') + 'assistant\n' + C('b a') + M('&lt;|im_end|&gt;'),
+      note: 'Used by Qwen and a lot of the open ecosystem. Roles are plain words on their own line, wrapped in two special tokens.'
+    },
+    llama: {
+      body:
+        M('&lt;|begin_of_text|&gt;') + M('&lt;|start_header_id|&gt;') + 'system' + M('&lt;|end_header_id|&gt;') + '\n\n' +
+        C('You are terse.') + M('&lt;|eot_id|&gt;') +
+        M('&lt;|start_header_id|&gt;') + 'user' + M('&lt;|end_header_id|&gt;') + '\n\n' +
+        C('Reverse: a b') + M('&lt;|eot_id|&gt;') +
+        M('&lt;|start_header_id|&gt;') + 'assistant' + M('&lt;|end_header_id|&gt;') + '\n\n' +
+        C('b a') + M('&lt;|eot_id|&gt;'),
+      note: 'Different token names, a mandatory beginning-of-text token, and the blank line after the header is load-bearing.'
+    },
+    gemma: {
+      body:
+        M('&lt;bos&gt;') + M('&lt;start_of_turn&gt;') + 'user\n' +
+        C('You are terse.') + '\n\n' + C('Reverse: a b') + M('&lt;end_of_turn&gt;') + '\n' +
+        M('&lt;start_of_turn&gt;') + 'model\n' + C('b a') + M('&lt;end_of_turn&gt;'),
+      note: 'Gemma has no system role at all — the template folds your system message into the first user turn. It also calls the assistant "model". Same data, structurally different sequence.'
+    }
+  };
+
+  var out = root.querySelector('[data-role="out"]');
+  var note = root.querySelector('[data-role="tmplnote"]');
+  var btns = root.querySelectorAll('[data-tmpl]');
+
+  function show(key) {
+    out.innerHTML = TEMPLATES[key].body;
+    note.textContent = TEMPLATES[key].note;
+    btns.forEach(function (b) {
+      b.setAttribute('aria-pressed', b.getAttribute('data-tmpl') === key ? 'true' : 'false');
+    });
+  }
+
+  btns.forEach(function (b) {
+    b.addEventListener('click', function () { show(b.getAttribute('data-tmpl')); });
+  });
+
+  show('chatml');
+})();
+</script>

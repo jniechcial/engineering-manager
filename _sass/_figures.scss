@@ -1,0 +1,1059 @@
+// ── Explainer figures ───────────────────────────────────────
+// Hand-built diagram components for technical posts. Same
+// vocabulary as the rest of the site: 3px black rules, hard
+// offset shadows, flat tints, no gradients, no blur.
+
+.fig {
+  margin: 2.8rem 0;
+}
+
+// Optional breakout — figures get more room than the text measure
+// once the viewport can actually afford it.
+.fig--wide {
+  @media (min-width: 1150px) {
+    margin-left: -6.5rem;
+    margin-right: -6.5rem;
+  }
+}
+
+.fig__label {
+  @extend %chip;
+  background: var(--accent-3);
+  margin-bottom: .75rem;
+}
+
+.fig__frame {
+  background: var(--card);
+  border: $border-width solid var(--ink);
+  @include hard-shadow(6px, 6px);
+  padding: 1.2rem;
+
+  @media (min-width: 600px) {
+    padding: 1.5rem;
+  }
+}
+
+.fig__cap {
+  color: var(--meta);
+  font-size: .84rem;
+  line-height: 1.5;
+  margin: .9rem 0 0;
+
+  strong { color: var(--ink-soft); }
+}
+
+.fig__title {
+  font-family: $display-font;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  margin: 0 0 .2rem;
+}
+
+.fig__note {
+  color: var(--meta);
+  font-size: .84rem;
+  line-height: 1.5;
+  margin: 0 0 1rem;
+}
+
+// Section rule inside a frame.
+.fig__hr {
+  border: 0;
+  border-top: 2px dashed var(--ink);
+  margin: 1.3rem 0;
+  opacity: .35;
+}
+
+.fig__eyebrow {
+  font-family: $display-font;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--meta);
+  margin: 0 0 .55rem;
+}
+
+// Horizontal scroll shell for anything that can't compress further.
+.fig__scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: .3rem;
+}
+
+// ── Tokens ──────────────────────────────────────────────────
+.tok {
+  background: var(--card);
+  border: 2px solid var(--ink);
+  color: var(--ink);
+  display: inline-block;
+  font-family: $mono-font;
+  font-size: .82rem;
+  font-weight: 500;
+  line-height: 1.1;
+  padding: .34em .5em;
+  white-space: nowrap;
+}
+
+.tok--prompt     { background: var(--tint-3); }
+.tok--completion { background: var(--accent); font-weight: 700; }
+.tok--special    { background: var(--tint-2); }
+.tok--think      { background: var(--tint-4); }
+.tok--ghost      { background: transparent; border-style: dashed; color: var(--meta); }
+
+.tok-row {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem;
+}
+
+// Small colour key.
+.key {
+  display: flex;
+  flex-wrap: wrap;
+  font-family: $display-font;
+  font-size: .72rem;
+  font-weight: 600;
+  gap: .35rem 1rem;
+  letter-spacing: .02em;
+  margin-top: .8rem;
+  color: var(--ink-soft);
+}
+
+.key span {
+  align-items: center;
+  display: inline-flex;
+  gap: .4rem;
+}
+
+.key i {
+  border: 2px solid var(--ink);
+  display: inline-block;
+  height: .8rem;
+  width: .8rem;
+}
+
+.key--prompt     i { background: var(--tint-3); }
+.key--completion i { background: var(--accent); }
+.key--argmax     i { background: var(--accent-3); }
+.key--rest       i { background: var(--rule-soft); }
+.key--dropped    i { background: transparent; border-style: dashed; }
+
+// ── Distribution bars (logits → probabilities) ──────────────
+.dist {
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+}
+
+.dist__row {
+  align-items: center;
+  display: grid;
+  font-family: $mono-font;
+  font-size: .82rem;
+  font-variant-numeric: tabular-nums;
+  gap: .6rem;
+  grid-template-columns: 4.6rem 3.2rem 1fr 3.4rem;
+}
+
+.dist__tok    { color: var(--ink); overflow: hidden; text-overflow: ellipsis; }
+.dist__logit  { color: var(--meta); text-align: right; }
+.dist__p      { text-align: right; color: var(--ink-soft); }
+
+.dist__track {
+  background: var(--card);
+  border: 2px solid var(--ink);
+  display: block;
+  height: 1rem;
+  overflow: hidden;
+}
+
+// Variant with a trailing "target" / "argmax" marker column, so the labels
+// never crowd the token names.
+.dist--tagged .dist__row { grid-template-columns: 4.6rem 3.2rem 1fr 3.4rem 4.2rem; }
+
+.dist__bar {
+  background: var(--rule-soft);
+  display: block;
+  height: 100%;
+  transform-origin: left center;
+  width: var(--w, 0%);
+  @include transition(width .35s cubic-bezier(.22,.7,.3,1), background-color .15s ease);
+}
+
+.dist__row--argmax .dist__bar { background: var(--accent-3); }
+.dist__row--argmax .dist__tok { font-weight: 700; }
+
+.dist__row--target .dist__bar   { background: var(--accent); }
+.dist__row--target .dist__tok,
+.dist__row--target .dist__p     { color: var(--ink); font-weight: 700; }
+
+.dist__tag {
+  @extend %chip;
+  font-size: .56rem;
+  padding: .22rem .3rem;
+}
+
+.dist__tag--target { background: var(--accent); }
+.dist__tag--argmax { background: var(--accent-3); }
+
+@media (max-width: 34rem) {
+  .dist__row { grid-template-columns: 4.2rem 1fr 3.2rem; }
+  .dist--tagged .dist__row { grid-template-columns: 4.2rem 1fr 3rem 3.8rem; }
+  .dist__logit { display: none; }
+}
+
+// ── Readout / stat line ─────────────────────────────────────
+.readout {
+  align-items: baseline;
+  border-top: 2px solid var(--ink);
+  display: flex;
+  flex-wrap: wrap;
+  font-family: $mono-font;
+  font-size: .88rem;
+  font-variant-numeric: tabular-nums;
+  gap: .5rem 1rem;
+  margin-top: 1rem;
+  padding-top: .9rem;
+}
+
+.readout b {
+  background: var(--accent-2);
+  border: 2px solid var(--ink);
+  font-size: 1rem;
+  padding: .1rem .4rem;
+}
+
+.readout .readout__note {
+  color: var(--meta);
+  flex: 1 1 16rem;
+  font-family: $body-font;
+  font-size: .84rem;
+  line-height: 1.5;
+}
+
+// ── Controls (sliders, buttons, tabs) ───────────────────────
+.ctl {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem .9rem;
+}
+
+.ctl__label {
+  font-family: $display-font;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.ctl__value {
+  background: var(--accent-2);
+  border: 2px solid var(--ink);
+  font-family: $mono-font;
+  font-size: .8rem;
+  font-variant-numeric: tabular-nums;
+  padding: .12rem .4rem;
+}
+
+.btn {
+  background: var(--card);
+  border: 2px solid var(--ink);
+  @include hard-shadow(3px, 3px);
+  color: var(--ink);
+  cursor: pointer;
+  font-family: $display-font;
+  font-size: .74rem;
+  font-weight: 700;
+  letter-spacing: .05em;
+  padding: .45rem .7rem;
+  text-transform: uppercase;
+  @include transition(transform .1s ease, box-shadow .1s ease, background-color .1s ease);
+
+  &:hover:not(:disabled) { background: var(--accent); }
+
+  &:active:not(:disabled) {
+    transform: translate(3px, 3px);
+    box-shadow: 0 0 0 var(--shadow);
+  }
+
+  &:disabled { color: var(--meta); cursor: default; opacity: .55; }
+
+  &[aria-pressed="true"] { background: var(--accent-3); }
+}
+
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  flex: 1 1 10rem;
+  height: 1.4rem;
+  margin: 0;
+  min-width: 8rem;
+
+  &::-webkit-slider-runnable-track {
+    background: var(--paper);
+    border: 2px solid var(--ink);
+    height: .8rem;
+  }
+
+  &::-moz-range-track {
+    background: var(--paper);
+    border: 2px solid var(--ink);
+    height: .8rem;
+  }
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    background: var(--accent);
+    border: 2px solid var(--ink);
+    height: 1.35rem;
+    margin-top: -.5rem;
+    width: .9rem;
+  }
+
+  &::-moz-range-thumb {
+    background: var(--accent);
+    border: 2px solid var(--ink);
+    border-radius: 0;
+    height: 1.35rem;
+    width: .9rem;
+  }
+}
+
+// Tab strip — used for "same messages, different chat template".
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin-bottom: .9rem;
+}
+
+// ── Two-up comparison cards ─────────────────────────────────
+.duo {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.duo--tight { gap: .8rem; }
+
+// Let panes take their natural height instead of stretching to match.
+.duo--top { align-items: start; }
+
+.pane {
+  background: var(--card);
+  border: $border-width solid var(--ink);
+  display: flex;
+  flex-direction: column;
+}
+
+.pane__head {
+  border-bottom: $border-width solid var(--ink);
+  font-family: $display-font;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .07em;
+  padding: .5rem .7rem;
+  text-transform: uppercase;
+}
+
+.pane__head--cold { background: var(--tint-3); }
+.pane__head--warm { background: var(--accent); }
+.pane__head--flat { background: var(--tint-2); }
+.pane__head--good { background: var(--tint-4); }
+
+.pane__body {
+  flex: 1;
+  padding: .85rem .9rem;
+}
+
+.pane__prompt {
+  border-bottom: 2px dashed var(--ink);
+  color: var(--meta);
+  font-family: $mono-font;
+  font-size: .78rem;
+  margin: 0 0 .7rem;
+  padding-bottom: .6rem;
+}
+
+.pane__out {
+  font-family: $mono-font;
+  font-size: .82rem;
+  line-height: 1.55;
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.pane__foot {
+  border-top: 2px solid var(--ink);
+  color: var(--meta);
+  font-size: .8rem;
+  line-height: 1.45;
+  padding: .6rem .9rem;
+}
+
+.pane__stat {
+  font-family: $mono-font;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  margin: 0 0 .3rem;
+}
+
+.pane__calc {
+  color: var(--meta);
+  font-family: $mono-font;
+  font-size: .74rem;
+  margin: 0 0 .5rem;
+}
+
+.pane__body p:last-child { margin-bottom: 0; }
+
+.pane__body p {
+  font-size: .86rem;
+  line-height: 1.5;
+  margin: 0 0 .6rem;
+}
+
+// ── Flow diagram (boxes + arrows) ───────────────────────────
+.flow {
+  align-items: stretch;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem;
+}
+
+.flow__box {
+  background: var(--card);
+  border: $border-width solid var(--ink);
+  flex: 1 1 8rem;
+  padding: .7rem .8rem;
+  text-align: center;
+}
+
+.flow__box--in    { background: var(--tint-3); }
+.flow__box--act   { background: var(--accent); }
+.flow__box--out   { background: var(--tint-4); }
+.flow__box--next  { background: transparent; border-style: dashed; }
+
+.flow__kind {
+  font-family: $display-font;
+  font-size: .6rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  display: block;
+  margin-bottom: .25rem;
+}
+
+.flow__name {
+  font-family: $display-font;
+  font-size: .88rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.15;
+}
+
+.flow__arrow {
+  align-self: center;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1;
+}
+
+@media (max-width: 600px) {
+  .flow { flex-direction: column; }
+  .flow__arrow { transform: rotate(90deg); }
+}
+
+// ── Ladder (stepped scale) ──────────────────────────────────
+.ladder {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+
+.ladder__step {
+  align-items: center;
+  display: grid;
+  gap: .8rem;
+  grid-template-columns: 5.5rem 1fr;
+}
+
+.ladder__n {
+  background: var(--accent-2);
+  border: 2px solid var(--ink);
+  font-family: $mono-font;
+  font-size: .8rem;
+  font-weight: 700;
+  padding: .3rem .4rem;
+  text-align: center;
+}
+
+.ladder__bar {
+  background: var(--tint-3);
+  border: 2px solid var(--ink);
+  font-family: $body-font;
+  font-size: .84rem;
+  line-height: 1.4;
+  padding: .45rem .65rem;
+  width: var(--w, 100%);
+  min-width: 12rem;
+}
+
+.ladder__step:nth-child(1) .ladder__bar { background: var(--tint-2); }
+.ladder__step:nth-child(2) .ladder__bar { background: var(--tint-3); }
+.ladder__step:nth-child(3) .ladder__bar { background: var(--accent); }
+.ladder__step:nth-child(4) .ladder__bar { background: var(--tint-4); }
+
+@media (max-width: 34rem) {
+  .ladder__step { grid-template-columns: 4.4rem 1fr; gap: .5rem; }
+  .ladder__bar { min-width: 0; width: 100% !important; }
+}
+
+// ── Ledger (loss adding up) ─────────────────────────────────
+.ledger {
+  display: flex;
+  flex-direction: column;
+  font-family: $mono-font;
+  font-size: .86rem;
+  font-variant-numeric: tabular-nums;
+  gap: .45rem;
+}
+
+.ledger__line {
+  align-items: baseline;
+  display: flex;
+  gap: .7rem;
+}
+
+.ledger__line .dots {
+  border-bottom: 2px dotted var(--ink);
+  flex: 1;
+  opacity: .35;
+  transform: translateY(-.25em);
+}
+
+.ledger__line--off {
+  color: var(--meta);
+  .lbl { text-decoration: line-through; }
+}
+
+.ledger__line--sum {
+  border-top: 2px solid var(--ink);
+  margin-top: .35rem;
+  padding-top: .7rem;
+
+  .val {
+    background: var(--accent);
+    border: 2px solid var(--ink);
+    font-weight: 700;
+    padding: .1rem .35rem;
+  }
+}
+
+// ── Sequence strip with the shift-by-one arrow ──────────────
+.seq {
+  min-width: 33rem;
+  position: relative;
+}
+
+.seq__row {
+  display: grid;
+  gap: .3rem;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.seq__idx {
+  color: var(--meta);
+  font-family: $mono-font;
+  font-size: .68rem;
+  padding-bottom: .25rem;
+  text-align: center;
+}
+
+.seqtok {
+  background: var(--card);
+  border: 2px solid var(--ink);
+  color: var(--ink);
+  cursor: pointer;
+  font-family: $mono-font;
+  font-size: .78rem;
+  overflow: hidden;
+  padding: .5rem .2rem;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+  @include transition(transform .1s ease, box-shadow .1s ease);
+}
+
+.seqtok--prompt     { background: var(--tint-3); }
+.seqtok--completion { background: var(--accent); font-weight: 700; }
+
+.seqtok[aria-pressed="true"] {
+  @include hard-shadow(4px, 4px);
+  transform: translate(-2px, -2px);
+  outline: none;
+}
+
+.seqtok:disabled { cursor: default; }
+
+// The band the swoop arrow is drawn into.
+.seq__band {
+  height: 3.4rem;
+  position: relative;
+}
+
+.seq__band svg {
+  display: block;
+  height: 100%;
+  overflow: visible;
+  width: 100%;
+}
+
+.seq__role {
+  font-family: $display-font;
+  font-size: .58rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--meta);
+  padding-top: .3rem;
+}
+
+.seq__role--target { color: var(--ink); }
+
+// ── Status chips ────────────────────────────────────────────
+.chip {
+  @extend %chip;
+}
+
+.chip--scored  { background: var(--accent); }
+.chip--masked  { background: transparent; border-style: dashed; color: var(--meta); }
+.chip--dropped { background: var(--rule-soft); }
+.chip--warn    { background: var(--accent-2); }
+.chip--calm    { background: var(--tint-4); }
+
+// ── Warning strip ───────────────────────────────────────────
+.strip {
+  align-items: flex-start;
+  background: var(--accent-2);
+  border: $border-width solid var(--ink);
+  display: flex;
+  font-size: .86rem;
+  gap: .7rem;
+  line-height: 1.5;
+  margin-top: 1.1rem;
+  padding: .8rem .9rem;
+}
+
+.strip__icon {
+  flex: none;
+  font-size: 1.1rem;
+  line-height: 1.3;
+}
+
+.strip p { margin: 0; }
+.strip p + p { margin-top: .5rem; }
+
+// ── Stacked memory bars ─────────────────────────────────────
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.stack__row { display: flex; flex-direction: column; gap: .35rem; }
+
+.stack__head {
+  align-items: baseline;
+  display: flex;
+  gap: .6rem;
+  justify-content: space-between;
+  font-family: $display-font;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.stack__total {
+  font-family: $mono-font;
+  font-variant-numeric: tabular-nums;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.stack__bar {
+  border: 2px solid var(--ink);
+  display: flex;
+  height: 2.1rem;
+  overflow: hidden;
+}
+
+.stack__seg {
+  align-items: center;
+  border-right: 2px solid var(--ink);
+  display: flex;
+  font-family: $mono-font;
+  font-size: .7rem;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0 .2rem;
+  white-space: nowrap;
+  width: var(--w);
+
+  &:last-child { border-right: 0; }
+}
+
+// Narrow screens can't fit "1,488 GB" inside a 12.5% slice — hide the numbers
+// rather than show a clipped fragment. The total and the key still carry it.
+@media (max-width: 30rem) {
+  .stack__seg--weights,
+  .stack__seg--grads,
+  .stack__seg--optim { color: transparent; }
+}
+
+.stack__seg--weights { background: var(--tint-3); }
+.stack__seg--grads   { background: var(--accent); }
+.stack__seg--optim   { background: var(--accent-2); }
+.stack__seg--free    { background: transparent; }
+.stack__seg--tiny    { background: var(--accent-4); color: var(--paper); }
+
+// ── Deep dive: an optional, skippable aside ─────────────────
+.deepdive {
+  background: var(--tint-2);
+  border: $border-width solid var(--ink);
+  @include hard-shadow(6px, 6px);
+  margin: 2.8rem 0;
+  padding: 0;
+
+  &[open] {
+    background: var(--card);
+  }
+}
+
+.deepdive > summary {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  gap: .75rem;
+  list-style: none;
+  padding: .9rem 1rem;
+  @include transition(background-color .12s ease);
+
+  &::-webkit-details-marker { display: none; }
+  &:hover { background: var(--accent-2); }
+}
+
+.deepdive[open] > summary {
+  border-bottom: $border-width solid var(--ink);
+  background: var(--accent-2);
+}
+
+.deepdive__bulb {
+  background: var(--card);
+  border: 2px solid var(--ink);
+  flex: none;
+  font-size: 1rem;
+  line-height: 1;
+  padding: .35rem .4rem;
+}
+
+.deepdive__text { flex: 1; min-width: 0; }
+
+.deepdive__kicker {
+  display: block;
+  font-family: $display-font;
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.deepdive__title {
+  display: block;
+  font-family: $display-font;
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+
+.deepdive__toggle {
+  flex: none;
+  font-family: $display-font;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--ink);
+
+  &::after { content: "Open ▾"; }
+}
+
+.deepdive[open] .deepdive__toggle::after { content: "Close ▴"; }
+
+.deepdive__body {
+  font-size: 1rem;
+  padding: 1.2rem 1.1rem .4rem;
+
+  > p:first-child { margin-top: 0; }
+}
+
+// Math-ish lines inside the deep dive.
+.eq {
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  font-family: $mono-font;
+  font-size: .82rem;
+  line-height: 1.7;
+  margin: 1.2rem 0;
+  overflow-x: auto;
+  padding: .85rem 1rem;
+  white-space: pre;
+}
+
+.eq b { background: var(--accent); padding: 0 .15em; }
+
+// Underflow demo.
+.underflow {
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+  margin: 1.2rem 0;
+}
+
+.underflow__row {
+  align-items: baseline;
+  display: grid;
+  font-family: $mono-font;
+  font-size: .8rem;
+  font-variant-numeric: tabular-nums;
+  gap: .6rem;
+  grid-template-columns: 7rem 1fr;
+}
+
+.underflow__row b {
+  background: var(--card);
+  border: 2px solid var(--ink);
+  font-weight: 500;
+  padding: .1rem .35rem;
+}
+
+.underflow__row--dead b { background: var(--accent); font-weight: 700; }
+
+// ── Rendered formula ────────────────────────────────────────
+.formula {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  font-family: $mono-font;
+  font-size: 1.35rem;
+  gap: .8rem;
+  justify-content: center;
+  padding: 1.3rem .6rem 1.5rem;
+}
+
+.formula__lhs { color: var(--ink); }
+.formula__eq  { color: var(--meta); font-size: 1.3rem; }
+
+.frac {
+  display: inline-flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.frac__num {
+  border-bottom: 3px solid var(--ink);
+  padding: 0 .7rem .3rem;
+}
+
+.frac__den { padding: .3rem .7rem 0; }
+
+// The bit of the formula the prose is about.
+.formula em,
+.frac em {
+  background: var(--accent);
+  font-style: normal;
+  padding: 0 .12em;
+}
+
+.formula sub, .formula sup { font-size: .62em; }
+
+.annot {
+  border-top: 2px dashed var(--ink);
+  display: flex;
+  flex-direction: column;
+  gap: .55rem;
+  margin-top: .4rem;
+  padding-top: 1rem;
+}
+
+.annot__row {
+  align-items: baseline;
+  display: grid;
+  font-size: .86rem;
+  gap: .75rem;
+  grid-template-columns: 5.4rem 1fr;
+  line-height: 1.45;
+}
+
+.annot__sym {
+  background: var(--tint-2);
+  border: 2px solid var(--ink);
+  font-family: $mono-font;
+  font-size: .82rem;
+  padding: .15rem .3rem;
+  text-align: center;
+}
+
+.annot__sym--hot { background: var(--accent); }
+
+@media (max-width: 34rem) {
+  .annot__row { grid-template-columns: 1fr; gap: .25rem; }
+  .annot__sym { justify-self: start; }
+}
+
+// ── Model facts line ────────────────────────────────────────
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  font-family: $mono-font;
+  font-size: .76rem;
+  gap: .3rem .5rem;
+  margin: 0 0 1.1rem;
+}
+
+.facts span {
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  padding: .18rem .4rem;
+}
+
+// ── GPU count grid ──────────────────────────────────────────
+.gpus {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin-top: .45rem;
+}
+
+.gpu {
+  background: var(--accent-2);
+  border: 1.5px solid var(--ink);
+  flex: none;
+  height: 15px;
+  width: 11px;
+}
+
+.gpu--lora { background: var(--accent-4); }
+
+.gpus__n {
+  font-family: $display-font;
+  font-size: .76rem;
+  font-weight: 700;
+  letter-spacing: .03em;
+  margin-right: .35rem;
+  text-transform: uppercase;
+}
+
+// ── Dataset rows + chat templates ───────────────────────────
+.samples {
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+}
+
+.sample {
+  border: 2px solid var(--ink);
+  padding: .55rem .7rem .6rem;
+}
+
+.sample__n {
+  font-family: $display-font;
+  font-size: .6rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--meta);
+  display: block;
+  margin-bottom: .35rem;
+}
+
+.msg {
+  align-items: baseline;
+  display: grid;
+  font-size: .84rem;
+  gap: .55rem;
+  grid-template-columns: 4.6rem 1fr;
+  line-height: 1.45;
+  padding: .12rem 0;
+}
+
+.msg__role {
+  background: var(--rule-soft);
+  border: 2px solid var(--ink);
+  font-family: $mono-font;
+  font-size: .66rem;
+  letter-spacing: .04em;
+  padding: .1rem .25rem;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.msg--user      .msg__role { background: var(--tint-3); }
+.msg--assistant .msg__role { background: var(--accent); }
+.msg--system    .msg__role { background: var(--tint-2); }
+
+.msg__content { color: var(--ink-soft); font-family: $mono-font; font-size: .78rem; }
+
+.tmpl {
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  font-family: $mono-font;
+  font-size: .76rem;
+  line-height: 1.75;
+  margin: 0;
+  overflow-x: auto;
+  padding: .8rem .9rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.tmpl mark {
+  background: var(--accent);
+  color: var(--ink);
+  font-weight: 600;
+  padding: 0 .12em;
+}
+
+.tmpl em { background: var(--tint-4); font-style: normal; padding: 0 .12em; }
+
+@media (prefers-reduced-motion: reduce) {
+  .dist__bar { transition: none; }
+  .btn, .seqtok { transition: none; }
+}

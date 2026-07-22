@@ -1,0 +1,33 @@
+{%- comment -%}
+Figure: rule-of-thumb dataset sizes and what each buys you.
+{%- endcomment -%}
+<figure class="fig">
+  <span class="fig__label">Figure 5</span>
+  <div class="fig__frame">
+    <p class="fig__title">How many samples buy you what</p>
+    <p class="fig__note">Rules of thumb, not laws. The bars are on a log scale, which is the only honest way to
+      draw a range that spans five orders of magnitude.</p>
+
+    <div class="ladder">
+      <div class="ladder__step">
+        <span class="ladder__n">10s</span>
+        <span class="ladder__bar" style="--w:32%">Simple formatting. Always answer in JSON. Stop using bullet points.</span>
+      </div>
+      <div class="ladder__step">
+        <span class="ladder__n">100s</span>
+        <span class="ladder__bar" style="--w:50%">Behaviour starts to shift. Tone, register, how it handles an edge case.</span>
+      </div>
+      <div class="ladder__step">
+        <span class="ladder__n">1,000s</span>
+        <span class="ladder__bar" style="--w:72%">The sweet spot for tuning a model to your own needs.</span>
+      </div>
+      <div class="ladder__step">
+        <span class="ladder__n">100k–1M</span>
+        <span class="ladder__bar" style="--w:100%">Frontier-lab territory. Teaching chat itself, or the first stage of reasoning.</span>
+      </div>
+    </div>
+  </div>
+  <figcaption class="fig__cap">This ladder only makes sense because SFT mostly <em>elicits</em> rather than
+    installs. A thousand samples cannot teach a model to converse from scratch — but it can absolutely tell it
+    which of its existing behaviours to bring to the front.</figcaption>
+</figure>

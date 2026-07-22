@@ -1,0 +1,127 @@
+{%- comment -%}
+Figure: logits → softmax → probabilities, with a temperature slider and a
+draw button. Toy 6-token vocabulary, one prompt.
+{%- endcomment -%}
+<figure class="fig" id="fig-sampling">
+  <span class="fig__label">Figure 1 · Interactive</span>
+  <div class="fig__frame">
+    <p class="fig__title">What the model actually outputs</p>
+    <p class="fig__note">A model with a six-word vocabulary, one prompt. Move the temperature to reshape
+      the distribution, then draw from it.</p>
+
+    <div class="tok-row" style="margin-bottom:1.1rem">
+      <span class="tok tok--prompt">Kuba</span>
+      <span class="tok tok--prompt">lives</span>
+      <span class="tok tok--prompt">in</span>
+      <span class="tok tok--ghost">? ? ?</span>
+    </div>
+
+    <div class="dist dist--tagged" data-role="dist"></div>
+
+    <hr class="fig__hr">
+
+    <div class="ctl">
+      <span class="ctl__label">Temperature</span>
+      <input class="slider" type="range" min="10" max="200" value="100" step="5"
+             data-role="temp" aria-label="Sampling temperature">
+      <span class="ctl__value" data-role="tempval">1.00</span>
+    </div>
+
+    <div class="ctl" style="margin-top:.9rem">
+      <button class="btn" type="button" data-role="draw">Draw a token</button>
+      <button class="btn" type="button" data-role="reset">Clear</button>
+      <span class="ctl__label" style="color:var(--meta)">Greedy always picks the argmax</span>
+      <span class="tok tok--special" data-role="greedy">Berlin</span>
+    </div>
+
+    <div style="margin-top:.9rem">
+      <p class="fig__eyebrow">Draws</p>
+      <div class="tok-row" data-role="history">
+        <span class="tok tok--ghost">nothing drawn yet</span>
+      </div>
+    </div>
+  </div>
+  <figcaption class="fig__cap">The left column is what the model really emits — <strong>logits</strong>, plain
+    unbounded numbers. Softmax turns them into probabilities that sum to 1. Turn the temperature down and the
+    distribution collapses onto the top token; turn it up and everything flattens toward a coin flip. Note that
+    the <em>ordering</em> never changes — temperature only changes how much the gaps matter.</figcaption>
+</figure>
+
+<script>
+(function () {
+  var root = document.getElementById('fig-sampling');
+  if (!root) return;
+
+  var VOCAB = [
+    { t: 'Berlin', z: 5.1 },
+    { t: 'Warsaw', z: 3.2 },
+    { t: 'Dublin', z: 2.8 },
+    { t: 'a',      z: 2.1 },
+    { t: 'the',    z: 1.2 },
+    { t: 'London', z: 0.4 }
+  ];
+
+  var distEl = root.querySelector('[data-role="dist"]');
+  var tempEl = root.querySelector('[data-role="temp"]');
+  var tempVal = root.querySelector('[data-role="tempval"]');
+  var histEl = root.querySelector('[data-role="history"]');
+  var draws = [];
+
+  // Build the rows once, then only mutate the numbers.
+  var rows = VOCAB.map(function (v, i) {
+    var row = document.createElement('div');
+    row.className = 'dist__row' + (i === 0 ? ' dist__row--argmax' : '');
+    row.innerHTML =
+      '<span class="dist__tok">' + v.t + '</span>' +
+      '<span class="dist__logit">' + v.z.toFixed(1) + '</span>' +
+      '<span class="dist__track"><span class="dist__bar"></span></span>' +
+      '<span class="dist__p">0.000</span>' +
+      '<span>' + (i === 0 ? '<span class="dist__tag dist__tag--argmax">argmax</span>' : '') + '</span>';
+    distEl.appendChild(row);
+    return { bar: row.querySelector('.dist__bar'), p: row.querySelector('.dist__p') };
+  });
+
+  function softmax(temp) {
+    var max = -Infinity, i;
+    for (i = 0; i < VOCAB.length; i++) max = Math.max(max, VOCAB[i].z / temp);
+    var ex = VOCAB.map(function (v) { return Math.exp(v.z / temp - max); });
+    var sum = ex.reduce(function (a, b) { return a + b; }, 0);
+    return ex.map(function (e) { return e / sum; });
+  }
+
+  var probs = [];
+
+  function render() {
+    var temp = parseInt(tempEl.value, 10) / 100;
+    tempVal.textContent = temp.toFixed(2);
+    probs = softmax(temp);
+    probs.forEach(function (p, i) {
+      rows[i].bar.style.setProperty('--w', (p * 100).toFixed(1) + '%');
+      rows[i].p.textContent = p.toFixed(3);
+    });
+  }
+
+  function drawToken() {
+    var r = Math.random(), acc = 0, i;
+    for (i = 0; i < probs.length; i++) {
+      acc += probs[i];
+      if (r <= acc) break;
+    }
+    var picked = VOCAB[Math.min(i, VOCAB.length - 1)].t;
+    draws.push(picked);
+    if (draws.length > 14) draws.shift();
+    histEl.innerHTML = draws.map(function (d) {
+      return '<span class="tok' + (d === 'Berlin' ? ' tok--special' : '') + '">' + d + '</span>';
+    }).join('');
+  }
+
+  tempEl.addEventListener('input', render);
+  root.querySelector('[data-role="draw"]').addEventListener('click', drawToken);
+  root.querySelector('[data-role="reset"]').addEventListener('click', function () {
+    draws = [];
+    histEl.innerHTML = '<span class="tok tok--ghost">nothing drawn yet</span>';
+  });
+
+  render();
+})();
+</script>

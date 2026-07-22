@@ -1,0 +1,38 @@
+{%- comment -%}
+Figure: the softmax formula, rendered and annotated.
+{%- endcomment -%}
+<figure class="fig">
+  <span class="fig__label">The formula</span>
+  <div class="fig__frame">
+    <div class="formula">
+      <span class="formula__lhs">P(token<sub>i</sub>)</span>
+      <span class="formula__eq">=</span>
+      <span class="frac">
+        <span class="frac__num"><em>e</em><sup>z<sub>i</sub></sup></span>
+        <span class="frac__den">Σ<sub>j</sub> <em>e</em><sup>z<sub>j</sub></sup></span>
+      </span>
+    </div>
+
+    <div class="annot">
+      <div class="annot__row">
+        <span class="annot__sym">z<sub>i</sub></span>
+        <span>The <strong>logit</strong> the model emitted for token <em>i</em> — a plain, unbounded
+          number. It can be negative.</span>
+      </div>
+      <div class="annot__row">
+        <span class="annot__sym annot__sym--hot">e<sup>x</sup></span>
+        <span>Exponentiation, and the only part that really matters. It makes every value positive, and
+          it is why a <em>gap</em> of 2 between two logits always means the same ratio of probabilities,
+          whatever the raw numbers are. This is also the knob temperature turns.</span>
+      </div>
+      <div class="annot__row">
+        <span class="annot__sym">Σ<sub>j</sub></span>
+        <span>The sum runs over <strong>every token in the vocabulary</strong> — all 150,000 or so of
+          them for a real model. Dividing by it is what forces the whole thing to add up to 1.</span>
+      </div>
+    </div>
+  </div>
+  <figcaption class="fig__cap">Plain normalisation — just dividing each logit by the total — would also
+    make things sum to 1. It is the exponentiation that makes the gaps between logits meaningful, and it
+    is the reason this particular formula is the one everyone uses.</figcaption>
+</figure>

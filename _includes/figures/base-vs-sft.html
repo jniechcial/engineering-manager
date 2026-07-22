@@ -1,0 +1,44 @@
+{%- comment -%}
+Figure: same prompt into a base model vs the same model after SFT.
+{%- endcomment -%}
+<figure class="fig">
+  <span class="fig__label">Figure 2</span>
+  <div class="fig__frame">
+    <p class="fig__title">Same weights, same prompt, different job</p>
+    <p class="fig__note">Nothing about the base model is broken here. It is doing exactly what it was
+      trained to do — continue the text. It just has no idea that it is supposed to be someone.</p>
+
+    <div class="duo">
+      <div class="pane">
+        <div class="pane__head pane__head--cold">Base model</div>
+        <div class="pane__body">
+          <p class="pane__prompt">What's a good way to learn Rust?</p>
+          <p class="pane__out">What's the best book for it?
+How long does it take to get productive?
+Is it worth it in 2026?
+
+I've been writing Go for four years and</p>
+        </div>
+        <div class="pane__foot">It continued your document — with three more questions someone might plausibly
+          have asked next, then a fragment of the post they came from.</div>
+      </div>
+
+      <div class="pane">
+        <div class="pane__head pane__head--warm">After SFT</div>
+        <div class="pane__body">
+          <p class="pane__prompt">What's a good way to learn Rust?</p>
+          <p class="pane__out">Start with the official Book — it's genuinely good and free. Then rewrite something you've already built in another language, so the borrow checker is the only new variable.</p>
+        </div>
+        <div class="pane__foot">It answered. It knows there are two parties, that it is the second one, and that
+          its turn ends.</div>
+      </div>
+    </div>
+
+    <div class="strip">
+      <span class="strip__icon">🔍</span>
+      <p>The knowledge of what a good Rust answer looks like was already in there — the base model read the
+        whole internet, including a lot of good Rust advice. What SFT added is the knowledge that
+        <strong>right now is the moment to produce one</strong>.</p>
+    </div>
+  </div>
+</figure>

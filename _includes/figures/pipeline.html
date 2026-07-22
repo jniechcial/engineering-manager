@@ -1,0 +1,37 @@
+{%- comment -%}
+Figure: the high-level training pipeline.
+{%- endcomment -%}
+<figure class="fig">
+  <span class="fig__label">Figure 3</span>
+  <div class="fig__frame">
+    <p class="fig__title">Where SFT sits</p>
+    <div class="flow">
+      <div class="flow__box flow__box--in">
+        <span class="flow__kind">Input</span>
+        <span class="flow__name">Base model</span>
+      </div>
+      <div class="flow__arrow">+</div>
+      <div class="flow__box flow__box--in">
+        <span class="flow__kind">Input</span>
+        <span class="flow__name">Conversation dataset</span>
+      </div>
+      <div class="flow__arrow">→</div>
+      <div class="flow__box flow__box--act">
+        <span class="flow__kind">Training</span>
+        <span class="flow__name">SFT</span>
+      </div>
+      <div class="flow__arrow">→</div>
+      <div class="flow__box flow__box--out">
+        <span class="flow__kind">Output</span>
+        <span class="flow__name">Fine-tuned model</span>
+      </div>
+      <div class="flow__arrow">→</div>
+      <div class="flow__box flow__box--next">
+        <span class="flow__kind">Usually next</span>
+        <span class="flow__name">RL</span>
+      </div>
+    </div>
+  </div>
+  <figcaption class="fig__cap">In practice this loop runs many times, with different datasets, at different
+    stages of a model's life. The picture is the same every time.</figcaption>
+</figure>
