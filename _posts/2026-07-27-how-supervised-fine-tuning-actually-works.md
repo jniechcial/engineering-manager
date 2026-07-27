@@ -3,14 +3,6 @@ layout: post
 title: "How supervised fine-tuning actually works"
 author: "Kuba"
 comments: true
-
-# ── Unpublished: reachable at its URL, hidden everywhere else. ──
-# On 27 July 2026, delete the four lines below and push.
-unlisted: true          # keeps it off /blog and the prev/next arrows
-draft: true             # keeps it out of feed.xml (jekyll-feed filters on this)
-robots: noindex, nofollow
-sitemap: false
-
 description: A visual, ground-up walkthrough of supervised fine-tuning for LLMs — what the loss actually measures, why the off-by-one trips everyone up, what masking really does, and how much of this you can do on one GPU.
 ---
 I spent my garden leave between companies diving deep into how transformer models work — how the architectures differ and how they are actually trained. The best way I know to check whether you understand something is to try to explain it, so this is me explaining supervised fine-tuning to myself, in public. And I already started writing another post about Reinforcement Learning.
