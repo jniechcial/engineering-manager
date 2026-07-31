@@ -1,0 +1,44 @@
+{%- comment -%}
+Figure: the direction flip between SFT and RL. Same model, opposite mechanics.
+{%- endcomment -%}
+<figure class="fig">
+  <span class="fig__label">Figure 1</span>
+  <div class="fig__frame">
+    <p class="fig__title">Two ways to move a weight</p>
+    <p class="fig__note">The machinery underneath is the same — a forward pass, log probabilities,
+      backpropagation, an optimizer. What changes is where the tokens come from.</p>
+
+    <div class="duo duo--top">
+      <div class="pane">
+        <div class="pane__head pane__head--cold">SFT</div>
+        <div class="pane__body">
+          <p class="pane__prompt">You supply the answer</p>
+          <p class="pane__out">1. Hand the model prompt + answer
+2. Ask how likely that answer was
+3. Push those exact tokens up</p>
+        </div>
+        <div class="pane__foot">The model never generates. You already decided what good looks like, token by
+          token.</div>
+      </div>
+
+      <div class="pane">
+        <div class="pane__head pane__head--warm">RL</div>
+        <div class="pane__body">
+          <p class="pane__prompt">The model supplies the answer</p>
+          <p class="pane__out">1. Hand the model a prompt only
+2. Let it generate, then score it
+3. Push those tokens up <em>or</em> down</p>
+        </div>
+        <div class="pane__foot">You never say what good looks like. You only say how good what came back
+          was.</div>
+      </div>
+    </div>
+
+    <div class="strip">
+      <span class="strip__icon">🔁</span>
+      <p>That third step is the whole difference. In SFT the sign is always "more of this". In RL the sign
+        comes from the reward, which means the same machinery can push a rollout <strong>away</strong> from
+        the model — something SFT structurally cannot do.</p>
+    </div>
+  </div>
+</figure>

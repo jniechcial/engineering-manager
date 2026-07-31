@@ -1,0 +1,90 @@
+{%- comment -%}
+Figure: a human ranking of K answers expands into K(K-1)/2 training pairs.
+{%- endcomment -%}
+<figure class="fig fig--wide" id="fig-pairs">
+  <span class="fig__label">Figure 9 · Interactive</span>
+  <div class="fig__frame">
+    <p class="fig__title">One ranking, many pairs</p>
+    <p class="fig__note">A human ranks the answers to a single prompt from best to worst. That ranking is
+      the only thing they gave you — no scores — so every pair you can read off it becomes a training
+      example.</p>
+
+    <div class="ctl" style="margin-bottom:1rem">
+      <span class="ctl__label">Answers ranked</span>
+      <input class="slider" type="range" min="2" max="9" value="4" step="1"
+             data-role="k" aria-label="Number of answers ranked per prompt">
+      <span class="ctl__value" data-role="kval">4</span>
+    </div>
+
+    <p class="fig__eyebrow">Human ranking, best first</p>
+    <div class="rank" data-role="rank"></div>
+
+    <hr class="fig__hr">
+
+    <p class="fig__eyebrow">Training pairs extracted — <span data-role="npairs">6</span></p>
+    <div class="pairgrid" data-role="pairs"></div>
+
+    <div class="readout">
+      <span>pairs = K(K&minus;1)/2 = <b data-role="calc">6</b></span>
+      <span class="readout__note">InstructGPT's labellers ranked between K=4 and K=9 answers per prompt, so
+        a single prompt yielded anywhere from 6 to 36 pairs. It also means the pairs from one prompt are
+        heavily correlated, which is why they are trained together in a single batch rather than shuffled
+        across the dataset.</span>
+    </div>
+  </div>
+  <figcaption class="fig__cap">Nobody ever said the best answer is worth 9 points and the worst is worth 2.
+    All you can extract from an ordering is <strong>"A beats B"</strong> — which turns the whole thing into a
+    yes/no question, and that is what makes reward modelling a classification problem.</figcaption>
+</figure>
+
+<script>
+(function () {
+  var root = document.getElementById('fig-pairs');
+  if (!root) return;
+
+  var ANSWERS = [
+    'Frame it as a scheduling problem and offer them an easier slot.',
+    'Ask for a shorter, more reliable recurring slot.',
+    'Send a message saying the reschedules are hard to plan around.',
+    'Bring it up in your next 1:1, whenever that happens.',
+    'Mention it to your skip-level instead.',
+    'Wait and see whether it settles down on its own.',
+    'Put the meeting back in their calendar yourself.',
+    'Stop booking them and rely on Slack.',
+    'Say nothing; managers are busy.'
+  ];
+  var LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
+
+  var slider   = root.querySelector('[data-role="k"]');
+  var kVal     = root.querySelector('[data-role="kval"]');
+  var rankEl   = root.querySelector('[data-role="rank"]');
+  var pairsEl  = root.querySelector('[data-role="pairs"]');
+  var nPairsEl = root.querySelector('[data-role="npairs"]');
+  var calcEl   = root.querySelector('[data-role="calc"]');
+
+  function render() {
+    var k = parseInt(slider.value, 10);
+    kVal.textContent = k;
+
+    rankEl.innerHTML = ANSWERS.slice(0, k).map(function (a, i) {
+      return '<div class="rank__row" style="background:' +
+        (i === 0 ? 'var(--accent)' : i === k - 1 ? 'var(--rule-soft)' : 'var(--card)') + '">' +
+        '<span class="rank__n">' + LETTERS[i] + '</span>' +
+        '<span class="rank__txt">' + a + '</span></div>';
+    }).join('');
+
+    var out = [];
+    for (var i = 0; i < k; i++) {
+      for (var j = i + 1; j < k; j++) {
+        out.push('<div class="pairbox"><b>' + LETTERS[i] + '</b> ≻ <s>' + LETTERS[j] + '</s></div>');
+      }
+    }
+    pairsEl.innerHTML = out.join('');
+    nPairsEl.textContent = out.length;
+    calcEl.textContent = out.length;
+  }
+
+  slider.addEventListener('input', render);
+  render();
+})();
+</script>

@@ -1,0 +1,115 @@
+{%- comment -%}
+Figure: what a row of RL training data looks like, for three kinds of task.
+The point is what is *missing* from every one of them — the solution.
+{%- endcomment -%}
+<figure class="fig" id="fig-rldata">
+  <span class="fig__label">Figure 3 · Interactive</span>
+  <div class="fig__frame">
+    <p class="fig__title">A row of RL data has no answer in it</p>
+    <p class="fig__note">Three kinds of task, three ways of scoring. In none of them does the dataset
+      contain the working — only the question, and something you can check at the end.</p>
+
+    <div class="tabs" data-role="tabs">
+      <button class="btn" type="button" data-k="math" aria-pressed="true">Maths</button>
+      <button class="btn" type="button" data-k="agent" aria-pressed="false">Agentic</button>
+      <button class="btn" type="button" data-k="pref" aria-pressed="false">Helpfulness</button>
+    </div>
+
+    <div class="samples">
+      <div class="sample" style="background:var(--card)">
+        <span class="sample__n">Prompt — this is what you must curate</span>
+        <div class="msg msg--user">
+          <span class="msg__role">prompt</span>
+          <span class="msg__content" data-role="prompt"></span>
+        </div>
+      </div>
+
+      <div class="sample" style="background:var(--tint-2)">
+        <span class="sample__n" data-role="checklabel">Checkable end state — ships with the prompt</span>
+        <div class="msg">
+          <span class="msg__role" style="background:var(--accent-2)">check</span>
+          <span class="msg__content" data-role="check"></span>
+        </div>
+      </div>
+
+      <div class="sample" style="background:transparent;border-style:dashed">
+        <span class="sample__n">Not in the dataset · never was · not needed</span>
+        <div class="msg">
+          <span class="msg__role" style="background:transparent;border-style:dashed">soln</span>
+          <span class="msg__content" style="color:var(--meta)" data-role="missing"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="readout">
+      <span class="chip" data-role="kind">verifier</span>
+      <span class="readout__note" data-role="note"></span>
+    </div>
+  </div>
+  <figcaption class="fig__cap">This is the load-bearing difference from SFT. There, every row had to contain
+    a written-out answer, which is why good SFT data is expensive. Here you need a question and a way to
+    check — and a model that already gets it right <em>sometimes</em> supplies the rest.</figcaption>
+</figure>
+
+<script>
+(function () {
+  var root = document.getElementById('fig-rldata');
+  if (!root) return;
+
+  var DATA = {
+    math: {
+      prompt: 'Natalia sold clips to 48 friends in April, and then she sold half as many clips in May. How many clips did she sell altogether?',
+      checkLabel: 'Final answer — ships with the prompt',
+      check: '72',
+      missing: 'The five lines of arithmetic that get you to 72. Nobody wrote them down.',
+      kind: 'verifier · exact match',
+      note: 'Parse the number the model finishes with, compare it to 72. A twelve-line solution and a one-line lucky guess score identically — which is a problem we will come back to.'
+    },
+    agent: {
+      prompt: 'The invoice for ACME from last Tuesday has the wrong VAT rate on it. Fix it and let their account owner know.',
+      checkLabel: 'End state — ships with the prompt',
+      check: 'invoice.vat_rate == 0.19 AND notification sent to account_owner(ACME)',
+      missing: 'Which tools to call, in what order, and what to do when the search returns three invoices.',
+      kind: 'verifier · environment assert',
+      note: 'You seed a throwaway environment, let the model loose in it, and assert on what is true at the end. The entire trace — every tool call, every result — is one rollout with one score.'
+    },
+    pref: {
+      prompt: 'My manager keeps rescheduling our 1:1s. How do I bring it up without sounding like I am complaining?',
+      checkLabel: 'Nothing ships with the prompt',
+      check: '— there is no correct answer to check against —',
+      missing: 'A good reply. There are hundreds, and they disagree with each other.',
+      kind: 'reward model',
+      note: 'Nothing here can be regexed or asserted on. This is the case that forces you to train a reward model first — a model whose only job is to score answers the way your humans would have.'
+    }
+  };
+
+  var els = {
+    prompt: root.querySelector('[data-role="prompt"]'),
+    checkLabel: root.querySelector('[data-role="checklabel"]'),
+    check: root.querySelector('[data-role="check"]'),
+    missing: root.querySelector('[data-role="missing"]'),
+    kind: root.querySelector('[data-role="kind"]'),
+    note: root.querySelector('[data-role="note"]')
+  };
+
+  var btns = Array.prototype.slice.call(root.querySelectorAll('[data-role="tabs"] .btn'));
+
+  function show(k) {
+    var d = DATA[k];
+    btns.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.k === k ? 'true' : 'false'); });
+    els.prompt.textContent = d.prompt;
+    els.checkLabel.textContent = d.checkLabel;
+    els.check.textContent = d.check;
+    els.missing.textContent = d.missing;
+    els.kind.textContent = d.kind;
+    els.kind.className = 'chip ' + (k === 'pref' ? 'chip--warn' : 'chip--scored');
+    els.note.textContent = d.note;
+  }
+
+  btns.forEach(function (b) {
+    b.addEventListener('click', function () { show(b.dataset.k); });
+  });
+
+  show('math');
+})();
+</script>

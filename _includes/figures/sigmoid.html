@@ -1,0 +1,135 @@
+{%- comment -%}
+Figure: two reward-head scalars → difference → sigmoid → probability →
+Bradley-Terry loss. Interactive on both scores.
+{%- endcomment -%}
+<figure class="fig fig--wide" id="fig-sigmoid">
+  <span class="fig__label">Figure 10 · Interactive</span>
+  <div class="fig__frame">
+    <p class="fig__title">From two numbers to one loss</p>
+    <p class="fig__note">The reward model reads the prompt plus each answer and returns a single scalar.
+      Only their <em>difference</em> ever matters. Move either one.</p>
+
+    <div class="ctl">
+      <span class="ctl__label">r&#8202;(preferred)</span>
+      <input class="slider" type="range" min="-30" max="30" value="12" step="1"
+             data-role="rp" aria-label="Score for the preferred answer">
+      <span class="ctl__value" data-role="rpval">1.2</span>
+    </div>
+    <div class="ctl" style="margin-top:.6rem">
+      <span class="ctl__label">r&#8202;(rejected)</span>
+      <input class="slider" type="range" min="-30" max="30" value="-4" step="1"
+             data-role="rd" aria-label="Score for the rejected answer">
+      <span class="ctl__value" data-role="rdval">-0.4</span>
+    </div>
+
+    <div class="curve" style="margin-top:1.1rem">
+      <svg viewBox="0 0 620 250" role="img" aria-label="A sigmoid curve mapping the score difference to a probability between 0 and 1.">
+        <!-- plot frame -->
+        <line x1="60" y1="220" x2="590" y2="220" stroke="#000" stroke-width="2"></line>
+        <line x1="60" y1="20"  x2="60"  y2="220" stroke="#000" stroke-width="2"></line>
+        <!-- p = 0.5 -->
+        <line x1="60" y1="120" x2="590" y2="120" stroke="#000" stroke-width="2" stroke-dasharray="5 5" opacity="0.35"></line>
+        <text x="52" y="124" font-size="11" text-anchor="end" font-family="'SF Mono', Menlo, monospace">0.5</text>
+        <text x="52" y="24"  font-size="11" text-anchor="end" font-family="'SF Mono', Menlo, monospace">1.0</text>
+        <text x="52" y="224" font-size="11" text-anchor="end" font-family="'SF Mono', Menlo, monospace">0.0</text>
+        <!-- diff = 0 -->
+        <line x1="325" y1="20" x2="325" y2="228" stroke="#000" stroke-width="2" stroke-dasharray="5 5" opacity="0.35"></line>
+        <text x="325" y="243" font-size="11" text-anchor="middle" font-family="'SF Mono', Menlo, monospace">0</text>
+        <text x="70"  y="243" font-size="11" font-family="'Space Grotesk', sans-serif">model disagrees with the human</text>
+        <text x="580" y="243" font-size="11" text-anchor="end" font-family="'Space Grotesk', sans-serif">model agrees</text>
+        <!-- the curve -->
+        <path data-role="curve" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round"></path>
+        <!-- marker -->
+        <line data-role="drop" x1="0" y1="0" x2="0" y2="220" stroke="#ff90e8" stroke-width="3"></line>
+        <circle data-role="dot" r="8" fill="#ff90e8" stroke="#000" stroke-width="3"></circle>
+      </svg>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><span class="stat__k">Difference</span><span class="stat__v" data-role="diff">—</span></div>
+      <div class="stat stat--hot"><span class="stat__k">σ(difference)</span><span class="stat__v" data-role="sig">—</span></div>
+      <div class="stat"><span class="stat__k">Loss</span><span class="stat__v" data-role="loss">—</span></div>
+    </div>
+
+    <div class="readout">
+      <span data-role="eq"></span>
+      <span class="readout__note" data-role="note"></span>
+    </div>
+  </div>
+  <figcaption class="fig__cap">σ turns the score difference into <strong>the probability that the model
+    would agree with the human on this pair</strong>. From there the loss is the same negative log you met
+    in SFT — just measured on a comparison instead of on an expected token. This is the
+    <strong>Bradley-Terry</strong> loss, and it is the whole of reward model training.</figcaption>
+</figure>
+
+<script>
+(function () {
+  var root = document.getElementById('fig-sigmoid');
+  if (!root) return;
+
+  var X0 = 60, X1 = 590, Y0 = 20, Y1 = 220;   // plot box
+  var TMIN = -6, TMAX = 6;                     // difference range drawn
+
+  var rp = root.querySelector('[data-role="rp"]');
+  var rd = root.querySelector('[data-role="rd"]');
+  var rpVal = root.querySelector('[data-role="rpval"]');
+  var rdVal = root.querySelector('[data-role="rdval"]');
+  var curve = root.querySelector('[data-role="curve"]');
+  var drop  = root.querySelector('[data-role="drop"]');
+  var dot   = root.querySelector('[data-role="dot"]');
+  var diffEl = root.querySelector('[data-role="diff"]');
+  var sigEl  = root.querySelector('[data-role="sig"]');
+  var lossEl = root.querySelector('[data-role="loss"]');
+  var eqEl   = root.querySelector('[data-role="eq"]');
+  var noteEl = root.querySelector('[data-role="note"]');
+
+  function sigmoid(t) { return 1 / (1 + Math.exp(-t)); }
+  function px(t) { return X0 + ((t - TMIN) / (TMAX - TMIN)) * (X1 - X0); }
+  function py(p) { return Y1 - p * (Y1 - Y0); }
+
+  // draw the curve once
+  var d = [];
+  for (var i = 0; i <= 120; i++) {
+    var t = TMIN + (i / 120) * (TMAX - TMIN);
+    d.push((i === 0 ? 'M ' : 'L ') + px(t).toFixed(1) + ' ' + py(sigmoid(t)).toFixed(1));
+  }
+  curve.setAttribute('d', d.join(' '));
+
+  function render() {
+    var a = parseInt(rp.value, 10) / 10;
+    var b = parseInt(rd.value, 10) / 10;
+    rpVal.textContent = a.toFixed(1);
+    rdVal.textContent = b.toFixed(1);
+
+    var t = a - b;
+    var p = sigmoid(t);
+    var loss = -Math.log(Math.max(p, 1e-12));
+
+    var tc = Math.max(TMIN, Math.min(TMAX, t));
+    var x = px(tc), y = py(sigmoid(tc));
+    dot.setAttribute('cx', x.toFixed(1));
+    dot.setAttribute('cy', y.toFixed(1));
+    drop.setAttribute('x1', x.toFixed(1));
+    drop.setAttribute('x2', x.toFixed(1));
+    drop.setAttribute('y1', y.toFixed(1));
+
+    diffEl.textContent = (t >= 0 ? '+' : '') + t.toFixed(1);
+    sigEl.textContent = p.toFixed(3);
+    lossEl.textContent = loss.toFixed(3);
+
+    eqEl.innerHTML = '&minus;log σ(' + a.toFixed(1) + ' &minus; ' + b.toFixed(1) + ') = <b>' +
+      loss.toFixed(3) + '</b>';
+
+    noteEl.textContent =
+      Math.abs(t) < 0.15 ? 'A difference of zero is σ = 0.5 — a coin flip. The model is telling you it has no opinion about which answer the human liked, and the loss is log 2 ≈ 0.693.' :
+      t >= 2.5 ? 'Confidently right. σ is close to 1, the log is close to 0, the loss is tiny — there is nothing here to fix, and the gradient reflects that.' :
+      t > 0 ? 'Right, but not by much. Real reward models live around here: about 70% agreement with the humans is a normal number, not a broken one.' :
+      t <= -2.5 ? 'Confidently wrong. σ is close to 0, the negative log explodes, and this single pair dominates the batch. That is the shape you want — being sure and wrong should cost more than being unsure.' :
+      'Wrong, but hesitantly. Loss above log 2, and the update pushes the two scores back past each other.';
+  }
+
+  rp.addEventListener('input', render);
+  rd.addEventListener('input', render);
+  render();
+})();
+</script>

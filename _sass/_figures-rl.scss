@@ -1,0 +1,294 @@
+// ── RL explainer figures ────────────────────────────────────
+// Extends _figures.scss with the components the reinforcement
+// learning post needs: rollout groups, diverging advantage bars,
+// the tug-of-war line, the KL track, and preference pairs.
+// Same vocabulary: 3px black rules, hard offset shadows, flat tints.
+
+// ── A group of rollouts (the GRPO unit of work) ─────────────
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+}
+
+.group__head,
+.roll {
+  align-items: center;
+  display: grid;
+  gap: .55rem;
+  grid-template-columns: 2.4rem 1fr 3.2rem 7.5rem 3.8rem;
+}
+
+.group__head {
+  font-family: $display-font;
+  font-size: .6rem;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--meta);
+  padding-bottom: .1rem;
+
+  span:nth-child(3),
+  span:nth-child(5) { text-align: right; }
+}
+
+.roll {
+  font-family: $mono-font;
+  font-size: .78rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.roll__id {
+  background: var(--rule-soft);
+  border: 2px solid var(--ink);
+  font-size: .7rem;
+  font-weight: 700;
+  padding: .22rem 0;
+  text-align: center;
+}
+
+.roll--win  .roll__id { background: var(--accent); }
+.roll--lose .roll__id { background: var(--tint-3); }
+
+.roll__what {
+  color: var(--ink-soft);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.roll__reward,
+.roll__adv { text-align: right; }
+
+.roll__adv b {
+  background: var(--accent);
+  border: 2px solid var(--ink);
+  font-weight: 700;
+  padding: .05rem .25rem;
+}
+
+.roll__adv b.neg  { background: var(--tint-3); }
+.roll__adv b.zero { background: var(--rule-soft); }
+
+// Diverging bar — zero in the middle, positive right, negative left.
+.diverge {
+  background: var(--card);
+  border: 2px solid var(--ink);
+  height: 1.05rem;
+  overflow: hidden;
+  position: relative;
+}
+
+// Sits above the fill so the origin stays visible on both signs.
+.diverge__zero {
+  border-left: 2px dashed var(--ink);
+  bottom: 0;
+  left: 50%;
+  opacity: .45;
+  position: absolute;
+  top: 0;
+  z-index: 2;
+}
+
+.diverge__fill {
+  bottom: 0;
+  position: absolute;
+  top: 0;
+  @include transition(left .25s ease, width .25s ease);
+}
+
+.diverge__fill--pos { background: var(--accent); }
+.diverge__fill--neg { background: var(--tint-3); }
+
+@media (max-width: 40rem) {
+  .group__head,
+  .roll { grid-template-columns: 2.2rem 3rem 5.5rem 3.4rem; }
+  .roll__what,
+  .group__head span:nth-child(2) { display: none; }
+}
+
+// ── Scenario preset buttons ─────────────────────────────────
+.presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin-bottom: 1rem;
+}
+
+// ── Summary stat row (mean / std / verdict) ─────────────────
+.stats {
+  display: grid;
+  gap: .6rem;
+  grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+  margin-top: 1rem;
+}
+
+.stat {
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  padding: .5rem .6rem;
+}
+
+.stat__k {
+  color: var(--meta);
+  display: block;
+  font-family: $display-font;
+  font-size: .58rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.stat__v {
+  display: block;
+  font-family: $mono-font;
+  font-size: 1.1rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  margin-top: .18rem;
+}
+
+.stat--hot { background: var(--accent-2); }
+.stat--dead { background: var(--rule-soft); }
+
+// ── A generic labelled track with a draggable-looking marker ─
+.track {
+  border: 2px solid var(--ink);
+  background: linear-gradient(90deg, var(--tint-4) 0%, var(--tint-2) 55%, var(--tint-1) 100%);
+  height: 1.6rem;
+  margin: .5rem 0 .3rem;
+  position: relative;
+}
+
+.track__mark {
+  background: var(--ink);
+  bottom: -4px;
+  position: absolute;
+  top: -4px;
+  transform: translateX(-50%);
+  width: 4px;
+  @include transition(left .2s ease);
+}
+
+.track__ends {
+  color: var(--meta);
+  display: flex;
+  font-family: $display-font;
+  font-size: .66rem;
+  font-weight: 700;
+  justify-content: space-between;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+// ── Sigmoid / curve plot ────────────────────────────────────
+.curve svg {
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
+// ── Preference pairs ────────────────────────────────────────
+.rank {
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+}
+
+.rank__row {
+  align-items: center;
+  border: 2px solid var(--ink);
+  display: grid;
+  gap: .6rem;
+  grid-template-columns: 2.6rem 1fr;
+  padding: .35rem .5rem .35rem .35rem;
+}
+
+.rank__n {
+  background: var(--accent-2);
+  border: 2px solid var(--ink);
+  font-family: $mono-font;
+  font-size: .72rem;
+  font-weight: 700;
+  padding: .2rem 0;
+  text-align: center;
+}
+
+.rank__txt {
+  font-family: $mono-font;
+  font-size: .76rem;
+  line-height: 1.4;
+}
+
+.pairgrid {
+  display: grid;
+  gap: .45rem;
+  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+}
+
+.pairbox {
+  border: 2px solid var(--ink);
+  font-family: $mono-font;
+  font-size: .74rem;
+  padding: .4rem .5rem;
+  text-align: center;
+}
+
+.pairbox b { background: var(--accent); padding: 0 .2em; }
+.pairbox s { color: var(--meta); text-decoration-thickness: 2px; }
+
+// ── Cost calculator ─────────────────────────────────────────
+.calc {
+  display: flex;
+  flex-direction: column;
+  gap: .9rem;
+}
+
+.calc__out {
+  background: var(--accent-2);
+  border: $border-width solid var(--ink);
+  font-family: $mono-font;
+  font-size: .86rem;
+  line-height: 1.6;
+  padding: .8rem .9rem;
+  text-align: center;
+}
+
+.calc__out b {
+  display: block;
+  font-size: 1.7rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+}
+
+// ── Reference table (published numbers) ─────────────────────
+.reftab {
+  border-collapse: collapse;
+  font-size: .82rem;
+  width: 100%;
+}
+
+.reftab th,
+.reftab td {
+  border: 2px solid var(--ink);
+  padding: .4rem .55rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.reftab th {
+  background: var(--tint-3);
+  font-family: $display-font;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+.reftab td:nth-child(2) {
+  font-family: $mono-font;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.reftab tbody tr:nth-child(even) td { background: var(--rule-soft); }

@@ -1,0 +1,54 @@
+{%- comment -%}
+Figure: the same prompt into the SFT checkpoint and into the same model after
+RLHF. Sets up why a verifier cannot score this.
+{%- endcomment -%}
+<figure class="fig">
+  <span class="fig__label">Figure 8</span>
+  <div class="fig__frame">
+    <p class="fig__title">Both of these are correct</p>
+    <p class="fig__note">Same prompt, same base weights, one of them has been through RL against a reward
+      model. Nothing in the left-hand answer is wrong.</p>
+
+    <div class="duo duo--top">
+      <div class="pane">
+        <div class="pane__head pane__head--cold">After SFT</div>
+        <div class="pane__body">
+          <p class="pane__prompt">My manager keeps rescheduling our 1:1s. How do I bring it up without sounding like I'm complaining?</p>
+          <p class="pane__out">There are several approaches you could consider:
+
+1. Communicate openly and honestly
+2. Use "I" statements
+3. Choose an appropriate time and place
+4. Focus on solutions rather than problems
+5. Be respectful of their schedule
+
+It's important to remember that managers are often very busy.</p>
+        </div>
+        <div class="pane__foot">Complete, safe, and no use to anyone. It has answered the category of question
+          rather than the question.</div>
+      </div>
+
+      <div class="pane">
+        <div class="pane__head pane__head--warm">After RL</div>
+        <div class="pane__body">
+          <p class="pane__prompt">My manager keeps rescheduling our 1:1s. How do I bring it up without sounding like I'm complaining?</p>
+          <p class="pane__out">Don't frame it as a complaint — frame it as a scheduling problem you'd like their help solving.
+
+"I've noticed our 1:1s have moved a few times recently. Is there a slot that would be more reliable for you? I'd rather have a shorter one that holds than a long one we keep pushing."
+
+That gives them an easy yes and doesn't ask them to admit anything.</p>
+        </div>
+        <div class="pane__foot">Specific, usable, and it hands over an actual sentence. Same knowledge,
+          different judgement about what the person wanted.</div>
+      </div>
+    </div>
+
+    <div class="strip">
+      <span class="strip__icon">🤷</span>
+      <p>Now try to write the verifier. There is no number to parse, no test suite to run, no end state to
+        assert on — and no single right answer to compare against, because there are dozens of good replies
+        here and they disagree with each other. <strong>This is the case that forces you to train a reward
+        model.</strong></p>
+    </div>
+  </div>
+</figure>

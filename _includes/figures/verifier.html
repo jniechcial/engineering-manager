@@ -1,0 +1,189 @@
+{%- comment -%}
+Figure: a verifier scoring four rollouts of the same prompt, under a binary
+reward and under a shaped one. Covers both "how a verifier works" and
+"what reward shaping buys you".
+{%- endcomment -%}
+<figure class="fig fig--wide" id="fig-verifier">
+  <span class="fig__label">Figure 4 · Interactive</span>
+  <div class="fig__frame">
+    <p class="fig__title">Scoring what came back</p>
+    <p class="fig__note">One prompt — <em>Natalia sold clips to 48 friends in April, then half as many in
+      May. How many altogether?</em> — and four things the model actually produced. Click a rollout, then
+      switch the reward scheme.</p>
+
+    <div class="ctl" style="margin-bottom:1rem">
+      <span class="ctl__label">Reward</span>
+      <button class="btn" type="button" data-role="sparse" aria-pressed="true">Binary</button>
+      <button class="btn" type="button" data-role="shaped" aria-pressed="false">Shaped</button>
+    </div>
+
+    <div class="presets" data-role="picker"></div>
+
+    <pre class="tmpl" data-role="out"></pre>
+
+    <hr class="fig__hr">
+
+    <p class="fig__eyebrow">What the verifier checks</p>
+    <div class="ledger" data-role="ledger"></div>
+
+    <div class="readout">
+      <span data-role="total"></span>
+      <span class="readout__note" data-role="note"></span>
+    </div>
+
+    <hr class="fig__hr">
+
+    <p class="fig__eyebrow">All four rollouts under this scheme</p>
+    <div class="group" data-role="allrows"></div>
+
+    <div class="stats">
+      <div class="stat" data-role="spreadbox">
+        <span class="stat__k">Distinct scores</span>
+        <span class="stat__v" data-role="distinct">—</span>
+      </div>
+      <div class="stat" data-role="rangebox">
+        <span class="stat__k">Spread</span>
+        <span class="stat__v" data-role="spread">—</span>
+      </div>
+    </div>
+  </div>
+  <figcaption class="fig__cap">Binary rewards are honest and unhackable, and they give you exactly two
+    values to rank a group by. Shaping adds cheap, exactly-checkable structure — did it think in a
+    <strong>&lt;think&gt;</strong> block, did it answer in the format you asked for — and separates rollouts
+    that a binary reward would have declared identical. Rollout 4 is the warning: it is paid for reasoning
+    <em>words</em> without doing any reasoning.</figcaption>
+</figure>
+
+<script>
+(function () {
+  var root = document.getElementById('fig-verifier');
+  if (!root) return;
+
+  // component keys: think block, answer tag, reasoning language, correct answer
+  var ROLLOUTS = [
+    {
+      id: 'R1', label: 'R1 · correct, tidy',
+      text: '<think>\nApril: 48 clips.\nMay: half as many, so 48 / 2 = 24.\nTotal: 48 + 24 = 72.\n</think>\n<answer>72</answer>',
+      think: 1, tag: 1, words: 0, correct: 1,
+      note: 'Everything you wanted. Under a binary reward this is worth exactly the same as R2 — the shaped reward is the only one that notices it also followed the format.'
+    },
+    {
+      id: 'R2', label: 'R2 · correct, messy',
+      text: 'ok so 48 in april and then half of that\n48/2 = 24\n48+24 = 72\n\nthe answer is 72',
+      think: 0, tag: 0, words: 0, correct: 1,
+      note: 'Right answer, none of the structure. Your parser has to be forgiving enough to find the 72, and this is the rollout that makes shaping tempting in the first place.'
+    },
+    {
+      id: 'R3', label: 'R3 · four right steps, one slip',
+      text: '<think>\nApril: 48 clips.\nMay: half as many, therefore 48 / 2 = 24.\nTotal: 48 + 24 = 62.\n</think>\n<answer>62</answer>',
+      think: 1, tag: 1, words: 1, correct: 0,
+      note: 'Everything correct up to the final addition. Under a binary reward this scores identically to R4, which is nonsense from the first line. That is what "sparse" costs you.'
+    },
+    {
+      id: 'R4', label: 'R4 · nonsense',
+      text: 'Therefore, hence, thus we can see that therefore the answer follows.\n\n<answer>7</answer>',
+      think: 0, tag: 1, words: 1, correct: 0,
+      note: 'And here is the bill for the clever part of your shaping. It says "therefore" and "hence", collects the reasoning-language credit, and has not done a single sum. This is reward hacking in miniature.'
+    }
+  ];
+
+  var COMPONENTS = [
+    { k: 'think',   pts: 0.2, lbl: 'working inside a &lt;think&gt; block' },
+    { k: 'tag',     pts: 0.1, lbl: 'answer wrapped in &lt;answer&gt;' },
+    { k: 'words',   pts: 0.1, lbl: 'reasoning language ("therefore", "hence")' },
+    { k: 'correct', pts: 1.0, lbl: 'final answer == 72' }
+  ];
+
+  var pickerEl   = root.querySelector('[data-role="picker"]');
+  var outEl      = root.querySelector('[data-role="out"]');
+  var ledgerEl   = root.querySelector('[data-role="ledger"]');
+  var totalEl    = root.querySelector('[data-role="total"]');
+  var noteEl     = root.querySelector('[data-role="note"]');
+  var allRowsEl  = root.querySelector('[data-role="allrows"]');
+  var distinctEl = root.querySelector('[data-role="distinct"]');
+  var spreadEl   = root.querySelector('[data-role="spread"]');
+  var spreadBox  = root.querySelector('[data-role="spreadbox"]');
+  var rangeBox   = root.querySelector('[data-role="rangebox"]');
+  var sparseBtn  = root.querySelector('[data-role="sparse"]');
+  var shapedBtn  = root.querySelector('[data-role="shaped"]');
+
+  var current = 0;
+  var shaped = false;
+
+  function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+  function score(r) {
+    if (!shaped) return r.correct * 1.0;
+    return COMPONENTS.reduce(function (a, c) { return a + (r[c.k] ? c.pts : 0); }, 0);
+  }
+
+  var pickBtns = ROLLOUTS.map(function (r, i) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'btn';
+    b.textContent = r.id;
+    b.setAttribute('aria-pressed', 'false');
+    b.addEventListener('click', function () { current = i; render(); });
+    pickerEl.appendChild(b);
+    return b;
+  });
+
+  function render() {
+    var r = ROLLOUTS[current];
+
+    sparseBtn.setAttribute('aria-pressed', shaped ? 'false' : 'true');
+    shapedBtn.setAttribute('aria-pressed', shaped ? 'true' : 'false');
+    pickBtns.forEach(function (b, i) {
+      b.setAttribute('aria-pressed', i === current ? 'true' : 'false');
+    });
+
+    outEl.textContent = r.text;
+
+    ledgerEl.innerHTML = COMPONENTS.map(function (c) {
+      var counts = shaped || c.k === 'correct';
+      var hit = !!r[c.k];
+      var cls = 'ledger__line' + (counts ? '' : ' ledger__line--off');
+      var val = counts ? (hit ? '+' + c.pts.toFixed(1) : '0.0') : 'ignored';
+      return '<div class="' + cls + '">' +
+        '<span class="lbl">' + (hit ? '✔ ' : '✘ ') + c.lbl + '</span>' +
+        '<span class="dots"></span>' +
+        '<span class="val">' + val + '</span></div>';
+    }).join('') +
+      '<div class="ledger__line ledger__line--sum"><span class="lbl">reward</span>' +
+      '<span class="dots"></span><span class="val">' + score(r).toFixed(1) + '</span></div>';
+
+    totalEl.innerHTML = 'reward(' + r.id + ') = <b>' + score(r).toFixed(1) + '</b>';
+    noteEl.textContent = r.note;
+
+    var scores = ROLLOUTS.map(score);
+    var max = Math.max.apply(null, scores);
+    var min = Math.min.apply(null, scores);
+
+    allRowsEl.innerHTML =
+      '<div class="group__head"><span>id</span><span>what it did</span><span>reward</span>' +
+      '<span>relative</span><span></span></div>' +
+      ROLLOUTS.map(function (rr, i) {
+        var s = scores[i];
+        var w = max > 0 ? (s / max) * 100 : 0;
+        return '<div class="roll ' + (s === max && max > min ? 'roll--win' : s === min && max > min ? 'roll--lose' : '') + '">' +
+          '<span class="roll__id">' + rr.id + '</span>' +
+          '<span class="roll__what">' + esc(rr.label.replace(/^R\d · /, '')) + '</span>' +
+          '<span class="roll__reward">' + s.toFixed(1) + '</span>' +
+          '<span class="diverge"><span class="diverge__fill diverge__fill--pos" style="left:0;width:' +
+            w.toFixed(0) + '%"></span></span>' +
+          '<span class="roll__adv"></span></div>';
+      }).join('');
+
+    var uniq = scores.filter(function (v, i, a) { return a.indexOf(v) === i; }).length;
+    distinctEl.textContent = uniq + ' of 4';
+    spreadEl.textContent = (max - min).toFixed(1);
+    spreadBox.className = 'stat' + (uniq <= 2 ? ' stat--dead' : ' stat--hot');
+    rangeBox.className = 'stat' + (uniq <= 2 ? ' stat--dead' : ' stat--hot');
+  }
+
+  sparseBtn.addEventListener('click', function () { shaped = false; render(); });
+  shapedBtn.addEventListener('click', function () { shaped = true; render(); });
+
+  render();
+})();
+</script>

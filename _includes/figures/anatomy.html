@@ -1,0 +1,68 @@
+{%- comment -%}
+Figure: the vocabulary. One prompt, N rollouts, N rewards, one group.
+{%- endcomment -%}
+<figure class="fig">
+  <span class="fig__label">Figure 5</span>
+  <div class="fig__frame">
+    <p class="fig__title">One prompt, eight attempts, one training example</p>
+
+    <div class="flow" style="margin-bottom:1.2rem">
+      <div class="flow__box flow__box--in">
+        <span class="flow__kind">1 row of your data</span>
+        <span class="flow__name">Prompt</span>
+      </div>
+      <div class="flow__arrow">→</div>
+      <div class="flow__box flow__box--act">
+        <span class="flow__kind">Generate ×8</span>
+        <span class="flow__name">Rollouts</span>
+      </div>
+      <div class="flow__arrow">→</div>
+      <div class="flow__box flow__box--out">
+        <span class="flow__kind">One number each</span>
+        <span class="flow__name">Rewards</span>
+      </div>
+    </div>
+
+    <p class="fig__eyebrow">The group</p>
+    <div class="tok-row">
+      <span class="tok tok--completion">1.0</span>
+      <span class="tok tok--prompt">0.0</span>
+      <span class="tok tok--completion">1.0</span>
+      <span class="tok tok--prompt">0.0</span>
+      <span class="tok tok--prompt">0.0</span>
+      <span class="tok tok--completion">1.0</span>
+      <span class="tok tok--prompt">0.0</span>
+      <span class="tok tok--prompt">0.0</span>
+    </div>
+
+    <div class="annot" style="margin-top:1.3rem">
+      <div class="annot__row">
+        <span class="annot__sym">prompt</span>
+        <span>One input from your dataset. Nothing else in the row is required.</span>
+      </div>
+      <div class="annot__row">
+        <span class="annot__sym annot__sym--hot">rollout</span>
+        <span>One output the model generates for that prompt. If the model is an agent making tool calls,
+          the entire trace — every step, every tool result, all the way to the end — is <em>one</em>
+          rollout.</span>
+      </div>
+      <div class="annot__row">
+        <span class="annot__sym">reward</span>
+        <span>The single number attached to a finished rollout.</span>
+      </div>
+      <div class="annot__row">
+        <span class="annot__sym">group</span>
+        <span>All the rollouts from the same prompt. Not eight training examples — one training example
+          made of eight attempts.</span>
+      </div>
+      <div class="annot__row">
+        <span class="annot__sym">trajectory</span>
+        <span>Another word for a rollout. Papers use both interchangeably.</span>
+      </div>
+    </div>
+  </div>
+  <figcaption class="fig__cap">Eight is the default in <a
+    href="https://huggingface.co/docs/trl/main/en/grpo_trainer">TRL's GRPO trainer</a> and the number this
+    post assumes throughout. Anything from 4 to 16 is common; DeepSeekMath, the paper GRPO comes from,
+    sampled 64.</figcaption>
+</figure>

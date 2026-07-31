@@ -1,0 +1,41 @@
+{%- comment -%}
+Figure: where RL sits in the full training pipeline. Extends the SFT post's
+pipeline figure with the two boxes this post is about.
+{%- endcomment -%}
+<figure class="fig fig--wide">
+  <span class="fig__label">Figure 2</span>
+  <div class="fig__frame">
+    <p class="fig__title">Where RL sits</p>
+    <p class="fig__note">The previous post covered the second box. This one covers the last two — and the
+      reward model is optional, because a verifier can do its job when the answer is checkable.</p>
+    <div class="flow">
+      <div class="flow__box flow__box--in">
+        <span class="flow__kind">Stage 1</span>
+        <span class="flow__name">Pretraining</span>
+      </div>
+      <div class="flow__arrow">→</div>
+      <div class="flow__box flow__box--in">
+        <span class="flow__kind">Stage 2</span>
+        <span class="flow__name">SFT</span>
+      </div>
+      <div class="flow__arrow">→</div>
+      <div class="flow__box flow__box--next">
+        <span class="flow__kind">Stage 3 · optional</span>
+        <span class="flow__name">Reward model</span>
+      </div>
+      <div class="flow__arrow">→</div>
+      <div class="flow__box flow__box--act">
+        <span class="flow__kind">Stage 4</span>
+        <span class="flow__name">RL</span>
+      </div>
+      <div class="flow__arrow">→</div>
+      <div class="flow__box flow__box--out">
+        <span class="flow__kind">Output</span>
+        <span class="flow__name">The model you ship</span>
+      </div>
+    </div>
+  </div>
+  <figcaption class="fig__cap">Stage 3 is only there when the thing you want cannot be checked by a program.
+    If you are rewarding "did the test suite pass" or "was the right tool called", you skip it entirely and
+    go straight from SFT to RL.</figcaption>
+</figure>

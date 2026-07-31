@@ -1,0 +1,105 @@
+{%- comment -%}
+Figure: the KL penalty as a leash. Beta sets the price of drifting away from
+the frozen reference model.
+{%- endcomment -%}
+<figure class="fig" id="fig-kl">
+  <span class="fig__label">Figure 7 · Interactive</span>
+  <div class="fig__frame">
+    <p class="fig__title">Beta is the price of drifting</p>
+    <p class="fig__note">A frozen copy of the model you started from is the reference. The KL term charges
+      the model for moving away from what that reference would have said. Move the slider.</p>
+
+    <div class="ctl">
+      <span class="ctl__label">Beta</span>
+      <input class="slider" type="range" min="0" max="5" value="2" step="1"
+             data-role="beta" aria-label="KL penalty coefficient beta">
+      <span class="ctl__value" data-role="betaval">0.01</span>
+      <span class="chip" data-role="verdict">balanced</span>
+    </div>
+
+    <div class="track">
+      <span class="track__mark" data-role="mark" style="left:55%"></span>
+    </div>
+    <div class="track__ends">
+      <span>← stays the model you trained</span>
+      <span>chases the reward →</span>
+    </div>
+
+    <hr class="fig__hr">
+
+    <div class="pane" style="border-width:2px">
+      <div class="pane__head pane__head--flat">What it now says to <em>"summarise this in one line"</em></div>
+      <div class="pane__body">
+        <p class="pane__out" data-role="out"></p>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><span class="stat__k">Mean reward</span><span class="stat__v" data-role="reward">—</span></div>
+      <div class="stat"><span class="stat__k">Drift from reference</span><span class="stat__v" data-role="drift">—</span></div>
+    </div>
+
+    <div class="strip">
+      <span class="strip__icon" data-role="icon">🔍</span>
+      <p data-role="note"></p>
+    </div>
+  </div>
+  <figcaption class="fig__cap">The reward curve and the usefulness curve come apart somewhere in the middle
+    of that slider, and where exactly is an experiment, not a formula. The cheap part is that no extra
+    generation is involved — the reference only needs a second forward pass over tokens you already have.
+    The expensive part is that you are now holding two copies of the model in memory.</figcaption>
+</figure>
+
+<script>
+(function () {
+  var root = document.getElementById('fig-kl');
+  if (!root) return;
+
+  var STEPS = [
+    { b: '0', drift: 100, reward: 100, verdict: 'unleashed', cls: 'chip--warn', icon: '🏃',
+      out: 'Summary summary summary. In summary: therefore, in summary, the summary is summarised. Score: 10/10.',
+      note: 'No reference model at all — this is TRL’s current default, and it is a reasonable one for a short run against a verifier that is genuinely hard to fake. Against a reward model it is how you end up here.' },
+    { b: '0.001', drift: 82, reward: 97, verdict: 'loose', cls: 'chip--warn', icon: '👀',
+      out: 'The document argues for X. The document argues for X. Key point: X. (Confidence: high.)',
+      note: 'A very light touch — the setting DeepSeek used for R1. Enough to stop the model falling apart, not enough to stop it developing tics. Fine when your reward is a verifier and you are watching outputs.' },
+    { b: '0.01', drift: 55, reward: 88, verdict: 'balanced', cls: 'chip--calm', icon: '🔍',
+      out: 'The document makes the case for X, mainly on cost grounds, and concedes one risk in passing.',
+      note: 'The zone you are usually aiming for. The model has clearly learned something — it is more direct and better calibrated than the reference — and it still writes like a language model.' },
+    { b: '0.04', drift: 32, reward: 76, verdict: 'balanced', cls: 'chip--calm', icon: '🔍',
+      out: 'The document makes a cost-based case for X and notes one risk.',
+      note: 'The value used in the original GRPO paper. Conservative: you keep almost all of the reference model’s behaviour and buy a smaller, safer improvement. A good place to start a first run.' },
+    { b: '0.2', drift: 12, reward: 44, verdict: 'tight', cls: 'chip--dropped', icon: '🪢',
+      out: 'The document discusses X, including several considerations relevant to the decision at hand.',
+      note: 'The leash is now shorter than the distance the model needs to travel. Reward barely moves across the whole run, and you will spend a day wondering why training "does not work".' },
+    { b: '1.0', drift: 3, reward: 14, verdict: 'frozen', cls: 'chip--dropped', icon: '🧊',
+      out: 'The document discusses X and presents information about the topic being discussed.',
+      note: 'Effectively no training at all. Any move away from the reference costs more than the reward it earns, so the optimiser correctly decides to do nothing.' }
+  ];
+
+  var slider  = root.querySelector('[data-role="beta"]');
+  var betaVal = root.querySelector('[data-role="betaval"]');
+  var verdict = root.querySelector('[data-role="verdict"]');
+  var mark    = root.querySelector('[data-role="mark"]');
+  var outEl   = root.querySelector('[data-role="out"]');
+  var rewardEl= root.querySelector('[data-role="reward"]');
+  var driftEl = root.querySelector('[data-role="drift"]');
+  var noteEl  = root.querySelector('[data-role="note"]');
+  var iconEl  = root.querySelector('[data-role="icon"]');
+
+  function render() {
+    var s = STEPS[parseInt(slider.value, 10)];
+    betaVal.textContent = s.b;
+    verdict.textContent = s.verdict;
+    verdict.className = 'chip ' + s.cls;
+    mark.style.left = s.drift + '%';
+    outEl.textContent = s.out;
+    rewardEl.textContent = s.reward;
+    driftEl.textContent = s.drift + '%';
+    noteEl.textContent = s.note;
+    iconEl.textContent = s.icon;
+  }
+
+  slider.addEventListener('input', render);
+  render();
+})();
+</script>

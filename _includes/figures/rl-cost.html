@@ -1,0 +1,145 @@
+{%- comment -%}
+Figure: the only number that matters for an RL run is total generations.
+Presets are real published prompt counts; see the note for what is real and
+what is illustrative.
+{%- endcomment -%}
+<figure class="fig fig--wide" id="fig-cost">
+  <span class="fig__label">Figure 12 · Interactive</span>
+  <div class="fig__frame">
+    <p class="fig__title">The number you are actually paying</p>
+    <p class="fig__note">Prompts are the wrong unit for an RL run. Every prompt is generated from N times,
+      every epoch, and generation is the expensive half.</p>
+
+    <div class="presets" data-role="presets"></div>
+
+    <div class="calc">
+      <div class="ctl">
+        <span class="ctl__label">Prompts</span>
+        <input class="slider" type="range" min="0" max="12" value="6" step="1"
+               data-role="p" aria-label="Number of prompts in the RL dataset">
+        <span class="ctl__value" data-role="pval">10,000</span>
+      </div>
+      <div class="ctl">
+        <span class="ctl__label">Rollouts each</span>
+        <input class="slider" type="range" min="0" max="6" value="3" step="1"
+               data-role="g" aria-label="Rollouts generated per prompt">
+        <span class="ctl__value" data-role="gval">8</span>
+      </div>
+      <div class="ctl">
+        <span class="ctl__label">Epochs</span>
+        <input class="slider" type="range" min="1" max="4" value="2" step="1"
+               data-role="e" aria-label="Passes over the dataset">
+        <span class="ctl__value" data-role="eval">2</span>
+      </div>
+
+      <div class="calc__out">
+        <b data-role="total">160,000</b>
+        full generations
+      </div>
+
+      <div class="stats">
+        <div class="stat"><span class="stat__k">Concurrent environments</span><span class="stat__v" data-role="env">8</span></div>
+        <div class="stat"><span class="stat__k">Tokens generated ≈</span><span class="stat__v" data-role="tok">96M</span></div>
+        <div class="stat"><span class="stat__k">Weight updates</span><span class="stat__v" data-role="steps">20,000</span></div>
+      </div>
+    </div>
+
+    <div class="strip">
+      <span class="strip__icon">💸</span>
+      <p data-role="note"></p>
+    </div>
+  </div>
+  <figcaption class="fig__cap">The "concurrent environments" figure is the one that catches software teams
+    out. If your rollouts touch a filesystem, a database or your own product's API, you need that many
+    isolated, seeded, throwaway environments standing up and tearing down for <em>every prompt</em>, with no
+    state leaking between them. A lot of the engineering in an RL project is there, not in the training loop.</figcaption>
+</figure>
+
+<script>
+(function () {
+  var root = document.getElementById('fig-cost');
+  if (!root) return;
+
+  var PROMPTS  = [100, 250, 500, 1000, 2500, 5000, 10000, 25000, 30000, 50000, 100000, 144000, 250000];
+  var ROLLOUTS = [1, 2, 4, 8, 16, 32, 64];
+  var TOKENS_PER_ROLLOUT = 600;
+
+  var PRESETS = [
+    { k: 'A first experiment', p: 3, g: 3, e: 1,
+      note: 'A thousand prompts, eight rollouts, one pass. Eight thousand generations is a run you can babysit on a single box — and it is enough to tell you whether your reward function is measuring what you think it is. Start here.' },
+    { k: 'This post’s example', p: 6, g: 3, e: 2,
+      note: 'Ten thousand prompts, eight rollouts, two passes. The 160,000 generations here are the reason people say RL is expensive — and note that not all of them teach the model anything, because every group where all eight rollouts scored the same contributes exactly zero gradient.' },
+    { k: 'Tülu 3 RLVR set', p: 8, g: 3, e: 1,
+      note: 'AI2’s open RLVR mix is 29,946 prompts — 7,473 from GSM8K, 7,500 from MATH, and 14,973 instruction-following prompts with programmatically checkable constraints. That prompt count is real; the eight rollouts here are this post’s assumption, not theirs.' },
+    { k: 'DeepSeekMath GRPO', p: 11, g: 6, e: 1,
+      note: 'The paper GRPO comes from: around 144,000 chain-of-thought maths questions, and 64 samples per question. Both numbers are theirs. Nine million generations — and this is the small, well-scoped, verifiable case.' }
+  ];
+
+  var pEl = root.querySelector('[data-role="p"]');
+  var gEl = root.querySelector('[data-role="g"]');
+  var eEl = root.querySelector('[data-role="e"]');
+  var pVal = root.querySelector('[data-role="pval"]');
+  var gVal = root.querySelector('[data-role="gval"]');
+  var eVal = root.querySelector('[data-role="eval"]');
+  var totalEl = root.querySelector('[data-role="total"]');
+  var envEl = root.querySelector('[data-role="env"]');
+  var tokEl = root.querySelector('[data-role="tok"]');
+  var stepsEl = root.querySelector('[data-role="steps"]');
+  var noteEl = root.querySelector('[data-role="note"]');
+  var presetsEl = root.querySelector('[data-role="presets"]');
+
+  var customNote = 'Every combination on these three sliders is a different bet about where the signal is. More prompts buys coverage; more rollouts per prompt buys a cleaner baseline and fewer dead groups; more epochs buys very little and risks a lot.';
+  var activeNote = null;
+
+  function group(n) { return n.toLocaleString('en-US'); }
+
+  function human(n) {
+    if (n >= 1e9) return (n / 1e9).toFixed(1).replace(/\.0$/, '') + 'B';
+    if (n >= 1e6) return (n / 1e6).toFixed(1).replace(/\.0$/, '') + 'M';
+    if (n >= 1e3) return (n / 1e3).toFixed(0) + 'k';
+    return String(n);
+  }
+
+  var btns = PRESETS.map(function (s, i) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'btn';
+    b.textContent = s.k;
+    b.setAttribute('aria-pressed', 'false');
+    b.addEventListener('click', function () {
+      pEl.value = s.p; gEl.value = s.g; eEl.value = s.e;
+      activeNote = i;
+      render();
+    });
+    presetsEl.appendChild(b);
+    return b;
+  });
+
+  function render() {
+    var p = PROMPTS[parseInt(pEl.value, 10)];
+    var g = ROLLOUTS[parseInt(gEl.value, 10)];
+    var e = parseInt(eEl.value, 10);
+
+    pVal.textContent = group(p);
+    gVal.textContent = g;
+    eVal.textContent = e;
+
+    var total = p * g * e;
+    totalEl.textContent = group(total);
+    envEl.textContent = g;
+    tokEl.textContent = human(total * TOKENS_PER_ROLLOUT);
+    stepsEl.textContent = group(p * e);
+
+    var match = -1;
+    PRESETS.forEach(function (s, i) {
+      if (s.p === parseInt(pEl.value, 10) && s.g === parseInt(gEl.value, 10) && s.e === e) match = i;
+    });
+    if (match !== activeNote) activeNote = match;
+    btns.forEach(function (b, i) { b.setAttribute('aria-pressed', i === match ? 'true' : 'false'); });
+    noteEl.textContent = match >= 0 ? PRESETS[match].note : customNote;
+  }
+
+  [pEl, gEl, eEl].forEach(function (el) { el.addEventListener('input', render); });
+  render();
+})();
+</script>

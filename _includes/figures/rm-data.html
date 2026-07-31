@@ -1,0 +1,44 @@
+{%- comment -%}
+Figure: published preference-dataset sizes for reward models. Every number
+here is from the primary source linked in the last column.
+{%- endcomment -%}
+<figure class="fig fig--wide">
+  <span class="fig__label">Figure 11</span>
+  <div class="fig__frame">
+    <p class="fig__title">What people actually collected</p>
+    <p class="fig__note">Preference data used to train reward models, from the papers that published
+      it. The spread is three orders of magnitude, and it tracks how general the preference is.</p>
+
+    <div class="fig__scroll">
+      <table class="reftab">
+        <thead>
+          <tr><th>Project</th><th>Preference data</th><th>What it was for</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="https://arxiv.org/abs/2203.02155">InstructGPT</a><br><span style="color:var(--meta)">OpenAI, 2022</span></td>
+            <td>33k RM prompts<br>K = 4–9 ranked each</td>
+            <td>General instruction-following. At K=4–9 that is 6 to 36 pairs per prompt. The reward model
+              itself was 6B — deliberately far smaller than the 175B policy.</td>
+          </tr>
+          <tr>
+            <td><a href="https://huggingface.co/datasets/Anthropic/hh-rlhf">HH-RLHF</a><br><span style="color:var(--meta)">Anthropic, 2022</span></td>
+            <td>161k train<br>8.55k test</td>
+            <td>Helpfulness and harmlessness for a general assistant. Still the most-used open preference
+              dataset, largely because it is a realistic size to actually work with.</td>
+          </tr>
+          <tr>
+            <td><a href="https://arxiv.org/abs/2307.09288">Llama 2</a><br><span style="color:var(--meta)">Meta, 2023</span></td>
+            <td>1,418,091 Meta<br>2,919,326 total</td>
+            <td>Two separate reward models — helpfulness and safety — fed by weekly batches of annotation
+              and retrained as the data arrived, across five successive RLHF rounds. Each new policy shifted
+              the distribution of outputs away from what the previous reward model had been trained on.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <figcaption class="fig__cap">Read the spread as a statement about scope, not quality. Llama 2's number is
+    what "reliable across everything a general assistant does, for a year" costs. If what you need is
+    <em>does this answer follow our support tone</em>, you are at the top of this table, not the bottom.</figcaption>
+</figure>

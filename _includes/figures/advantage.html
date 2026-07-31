@@ -1,0 +1,136 @@
+{%- comment -%}
+Figure: reward → baseline → advantage. Presets cover the degenerate cases
+(all-right, all-wrong), the scale-invariance point, and why we divide by the
+group standard deviation.
+{%- endcomment -%}
+<figure class="fig fig--wide" id="fig-adv">
+  <span class="fig__label">Figure 6 · Interactive</span>
+  <div class="fig__frame">
+    <p class="fig__title">The group grades itself</p>
+    <p class="fig__note">Eight rollouts of one prompt. The baseline is their own average — nothing else is
+      consulted. Pick a scenario and watch what survives into the advantage column.</p>
+
+    <div class="presets" data-role="presets"></div>
+
+    <div class="group" data-role="rows"></div>
+
+    <div class="stats">
+      <div class="stat"><span class="stat__k">Baseline (mean)</span><span class="stat__v" data-role="mean">—</span></div>
+      <div class="stat"><span class="stat__k">Group std</span><span class="stat__v" data-role="std">—</span></div>
+      <div class="stat" data-role="gradbox"><span class="stat__k">Gradient</span><span class="stat__v" data-role="grad">—</span></div>
+    </div>
+
+    <div class="strip">
+      <span class="strip__icon" data-role="icon">🔍</span>
+      <p data-role="note"></p>
+    </div>
+  </div>
+  <figcaption class="fig__cap"><code>advantage = (reward &minus; group_mean) / group_std</code>. Notice how
+    little of the original reward survives that: not its units, not its scale, not its absolute size. Only
+    the <strong>ordering</strong> and the <strong>relative gaps</strong> make it through.</figcaption>
+</figure>
+
+<script>
+(function () {
+  var root = document.getElementById('fig-adv');
+  if (!root) return;
+
+  var SCENARIOS = [
+    {
+      k: 'Mixed', r: [1, 0, 1, 0, 0, 1, 0, 0],
+      note: 'The useful case. Three rollouts landed, five did not, and the group has something to rank. This prompt is at the right difficulty for this model right now — which is a property of the pair, not of the prompt alone.'
+    },
+    {
+      k: '1000× the reward', r: [1000, 0, 1000, 0, 0, 1000, 0, 0],
+      note: 'Same scenario, a verifier handing out 1000 points instead of 1. Every advantage is identical to the last scenario, to the decimal. This is why the absolute value of your reward never matters — only that it is consistent across the run.'
+    },
+    {
+      k: 'All correct', r: [1, 1, 1, 1, 1, 1, 1, 1],
+      note: 'The model has outgrown this prompt. Every reward equals the mean, every advantage is zero, the loss is zero and no weight moves. You just paid for eight generations and bought nothing. Too-easy prompts are pure inference bill.'
+    },
+    {
+      k: 'All failed · binary', r: [0, 0, 0, 0, 0, 0, 0, 0],
+      note: 'The same dead end from the other side. A prompt the model never gets right teaches it exactly as little as one it always gets right. Both are wasted compute — which is the whole argument for curating prompts by difficulty.'
+    },
+    {
+      k: 'All failed · shaped', r: [0.3, 0.1, 0.4, 0.0, 0.3, 0.2, 0.1, 0.3],
+      note: 'Same eight failures, scored by the shaped reward from Figure 4. Nobody got the answer, but one of them got the format right and another got three steps in — so the group has an ordering again, and the prompt teaches something instead of being thrown away. This is the real argument for reward shaping.'
+    },
+    {
+      k: 'Tight cluster', r: [0.44, 0.46, 0.45, 0.48, 0.42, 0.47, 0.43, 0.45],
+      note: 'Every rollout scored between 0.42 and 0.48 — raw differences of hundredths. Dividing by the group standard deviation rescales them to roughly the same range as any other prompt, so this prompt gets a fair say in the update instead of being drowned out by a prompt whose rewards happened to span 0 to 1.'
+    }
+  ];
+
+  var presetsEl = root.querySelector('[data-role="presets"]');
+  var rowsEl    = root.querySelector('[data-role="rows"]');
+  var meanEl    = root.querySelector('[data-role="mean"]');
+  var stdEl     = root.querySelector('[data-role="std"]');
+  var gradEl    = root.querySelector('[data-role="grad"]');
+  var gradBox   = root.querySelector('[data-role="gradbox"]');
+  var noteEl    = root.querySelector('[data-role="note"]');
+  var iconEl    = root.querySelector('[data-role="icon"]');
+
+  var current = 0;
+
+  var btns = SCENARIOS.map(function (s, i) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'btn';
+    b.textContent = s.k;
+    b.setAttribute('aria-pressed', 'false');
+    b.addEventListener('click', function () { current = i; render(); });
+    presetsEl.appendChild(b);
+    return b;
+  });
+
+  function fmt(x) {
+    return Math.abs(x) >= 100 ? x.toFixed(0) : x.toFixed(2);
+  }
+
+  function render() {
+    var s = SCENARIOS[current];
+    btns.forEach(function (b, i) { b.setAttribute('aria-pressed', i === current ? 'true' : 'false'); });
+
+    var n = s.r.length;
+    var mean = s.r.reduce(function (a, b) { return a + b; }, 0) / n;
+    var variance = s.r.reduce(function (a, b) { return a + (b - mean) * (b - mean); }, 0) / n;
+    var std = Math.sqrt(variance);
+    var dead = std < 1e-9;
+
+    var adv = s.r.map(function (x) { return dead ? 0 : (x - mean) / std; });
+    var maxAbs = Math.max(1e-9, Math.max.apply(null, adv.map(Math.abs)));
+
+    rowsEl.innerHTML =
+      '<div class="group__head"><span>id</span><span>rollout</span><span>reward</span>' +
+      '<span>advantage</span><span>value</span></div>' +
+      s.r.map(function (x, i) {
+        var a = adv[i];
+        var half = (Math.abs(a) / maxAbs) * 50;
+        var cls = a > 1e-9 ? 'roll--win' : a < -1e-9 ? 'roll--lose' : '';
+        var bar = Math.abs(a) < 1e-9 ? '' :
+          '<span class="diverge__fill diverge__fill--' + (a > 0 ? 'pos' : 'neg') + '" style="left:' +
+            (a > 0 ? 50 : 50 - half).toFixed(2) + '%;width:' + half.toFixed(2) + '%"></span>';
+        var vcls = a > 1e-9 ? '' : a < -1e-9 ? 'neg' : 'zero';
+        return '<div class="roll ' + cls + '">' +
+          '<span class="roll__id">R' + (i + 1) + '</span>' +
+          '<span class="roll__what">' + (x > mean ? 'better than this model usually does' :
+                                          x < mean ? 'worse than this model usually does' :
+                                          'exactly average') + '</span>' +
+          '<span class="roll__reward">' + fmt(x) + '</span>' +
+          '<span class="diverge"><span class="diverge__zero"></span>' + bar + '</span>' +
+          '<span class="roll__adv"><b class="' + vcls + '">' + (a >= 0 ? '+' : '') + a.toFixed(2) +
+          '</b></span></div>';
+      }).join('');
+
+    meanEl.textContent = fmt(mean);
+    stdEl.textContent = fmt(std);
+    gradEl.textContent = dead ? 'none' : 'yes';
+    gradBox.className = 'stat ' + (dead ? 'stat--dead' : 'stat--hot');
+    iconEl.textContent = dead ? '🪦' : '🔍';
+    noteEl.textContent = s.note;
+  }
+
+  render();
+})();
+</script>
