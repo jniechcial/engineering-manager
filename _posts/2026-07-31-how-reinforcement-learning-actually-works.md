@@ -50,7 +50,6 @@ The most basic example of reward modelling for mathematical prompts is just chec
 
 {% include figures/verifier.html %}
 
-<-- AI >
 See one challenge with this scoring mechanism - the answer is either correct, or not. It's only binary. A model can reason in the right direction, or perform actions in the right direction, make a mistake at the last step and it's still a zero score. This is called **sparse reward**: it's all-or-nothing.
 
 You can make a sparse reward denser, by handing out partial credit for getting parts of it right. This is called **reward shaping**. These can be more narrow checks like following the right format you expect or calling tools that you would expect to be called.
